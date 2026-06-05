@@ -1,0 +1,62 @@
+﻿Nº Abastecimento;Código Fechamento;Data;Hora;Valor;Preço Bomba Cadastrado;Preço Bomba Praticado;Combustível;Empresa;Desconto;Valor a Receber;Litros;Emitido;Tipo Pagador;Unidade;Unidade Emissão
+3385006;278844;03/04/2025;16:20;1585,75;5,69;5,69;Diesel S10;Transnova;0,01;1585,74;278,69;716;Fintech Gasola;Matriz;Matriz
+3384352;278731;03/04/2025;13:44;152,02;3,89;3,89;Etanol C.;Cosampa;0;152,02;39,08;710;Fintech Gasola;São Paulo A;São Paulo A
+3383821;278731;03/04/2025;10:48;188,04;3,89;3,89;Etanol C.;Cosampa;0;188,04;48,34;710;Fintech Gasola;São Paulo A;São Paulo A
+3383382;278731;03/04/2025;09:10;200,1;5,79;5,79;Gasolina;Cosampa;0;200,1;34,56;710;Fintech Gasola;São Paulo A;São Paulo A
+3383318;278731;03/04/2025;08:55;205,08;5,79;5,79;Gasolina;Cosampa;0;205,08;35,42;710;Fintech Gasola;São Paulo A;São Paulo A
+3383239;278731;03/04/2025;08:45;215,79;5,79;5,79;Gasolina;Cosampa;0;215,79;37,27;710;Fintech Gasola;São Paulo A;São Paulo A
+3383201;278731;03/04/2025;08:40;218,28;5,79;5,79;Gasolina;Cosampa;0;218,28;37,7;710;Fintech Gasola;São Paulo A;São Paulo A
+3382737;;03/04/2025;07:21;107,48;3,89;3,89;Etanol C.;Santini;0;107,48;27,63;;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3382727;;03/04/2025;07:18;147,74;3,89;3,89;Etanol C.;Santini;0;147,74;37,98;;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3380328;278731;02/04/2025;15:18;155,95;3,89;3,89;Etanol C.;Cosampa;0;155,95;40,09;710;Fintech Gasola;São Paulo A;São Paulo A
+3379881;278800;02/04/2025;13:24;255,11;5,79;5,79;Gasolina;Axx Care;0;255,11;44,061;713;Fintech Gasola;Matriz;Matriz
+3379385;278731;02/04/2025;10:40;315,06;5,69;5,69;Diesel S10;Cosampa;0,01;315,05;55,37;710;Fintech Gasola;São Paulo A;São Paulo A
+3379326;278731;02/04/2025;10:24;109;3,89;3,89;Etanol C.;Cosampa;0,01;108,99;28,02;710;Fintech Gasola;São Paulo A;São Paulo A
+3379180;278731;02/04/2025;09:48;197,09;5,79;5,79;Gasolina;Cosampa;0;197,09;34,04;710;Fintech Gasola;São Paulo A;São Paulo A
+3379143;278731;02/04/2025;09:39;199,76;5,79;5,79;Gasolina;Cosampa;0,01;199,75;34,5;710;Fintech Gasola;São Paulo A;São Paulo A
+3378933;278731;02/04/2025;09:00;252,04;5,79;5,79;Gasolina;Cosampa;0,01;252,03;43,53;710;Fintech Gasola;São Paulo A;São Paulo A
+3378898;278731;02/04/2025;08:55;165,88;5,79;5,79;Gasolina;Cosampa;0;165,88;28,65;710;Fintech Gasola;São Paulo A;São Paulo A
+3378851;278731;02/04/2025;08:46;191,19;3,89;3,89;Etanol C.;Cosampa;0;191,19;49,15;710;Fintech Gasola;São Paulo A;São Paulo A
+3376070;278731;01/04/2025;15:45;161,55;3,89;3,89;Etanol C.;Cosampa;0;161,55;41,53;710;Fintech Gasola;São Paulo A;São Paulo A
+3375913;278731;01/04/2025;15:08;168,16;3,89;3,89;Etanol C.;Cosampa;0;168,16;43,23;710;Fintech Gasola;São Paulo A;São Paulo A
+3375010;278731;01/04/2025;10:22;204,68;5,79;5,79;Gasolina;Cosampa;0,01;204,67;35,35;710;Fintech Gasola;São Paulo A;São Paulo A
+3374389;278731;01/04/2025;08:32;211,62;5,79;5,79;Gasolina;Cosampa;0;211,62;36,55;710;Fintech Gasola;São Paulo A;São Paulo A
+3374220;278731;01/04/2025;08:07;211,05;5,79;5,79;Gasolina;Cosampa;0,01;211,04;36,45;710;Fintech Gasola;São Paulo A;São Paulo A
+3374090;;01/04/2025;07:47;110,71;3,89;3,89;Etanol C.;Santini;0,01;110,7;28,46;;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3372549;278731;31/03/2025;17:52;166,65;3,89;3,89;Etanol C.;Cosampa;0,01;166,64;42,84;710;Fintech Gasola;São Paulo A;São Paulo A
+3371877;278800;31/03/2025;15:34;65,08;5,79;5,79;Gasolina;Axx Care;0,01;65,07;11,24;713;Fintech Gasola;Matriz;Matriz
+3371854;278800;31/03/2025;15:27;265,93;5,79;5,79;Gasolina;Axx Care;0;265,93;45,93;713;Fintech Gasola;Matriz;Matriz
+3371200;278827;31/03/2025;12:14;1737;5,79;5,79;Diesel S500;Santini;0;1737;300;715;Fintech Gasola;Matriz;Matriz
+3370744;278731;31/03/2025;09:55;245,03;5,79;5,79;Gasolina;Cosampa;0;245,03;42,32;710;Fintech Gasola;São Paulo A;São Paulo A
+3370509;278731;31/03/2025;09:11;226,45;5,79;5,79;Gasolina;Cosampa;0,01;226,44;39,11;710;Fintech Gasola;São Paulo A;São Paulo A
+3370327;278731;31/03/2025;08:50;207,86;5,79;5,79;Gasolina;Cosampa;0;207,86;35,9;710;Fintech Gasola;São Paulo A;São Paulo A
+3370313;278731;31/03/2025;08:48;292,74;5,79;5,79;Gasolina;Cosampa;0;292,74;50,56;710;Fintech Gasola;São Paulo A;São Paulo A
+3370308;278731;31/03/2025;08:47;226,22;5,79;5,79;Gasolina;Cosampa;0,01;226,21;39,07;710;Fintech Gasola;São Paulo A;São Paulo A
+3370294;278731;31/03/2025;08:45;202,88;5,79;5,79;Gasolina;Cosampa;0;202,88;35,04;710;Fintech Gasola;São Paulo A;São Paulo A
+3370107;278731;31/03/2025;08:28;216,78;5,79;5,79;Gasolina;Cosampa;0,01;216,77;37,44;710;Fintech Gasola;São Paulo A;São Paulo A
+3370082;278731;31/03/2025;08:23;222,05;5,79;5,79;Gasolina;Cosampa;0,01;222,04;38,35;710;Fintech Gasola;São Paulo A;São Paulo A
+3368412;;30/03/2025;08:55;121,33;3,89;3,89;Etanol C.;Santini;0,01;121,32;31,19;;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3366300;278800;29/03/2025;10:31;249,49;5,79;5,79;Gasolina;Axx Care;0;249,49;43,09;713;Fintech Gasola;Matriz;Matriz
+3365581;;29/03/2025;07:28;205,35;3,89;3,89;Etanol C.;Santini;0;205,35;52,79;;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3364618;278731;28/03/2025;19:31;194,2;5,79;5,79;Gasolina;Cosampa;0,01;194,19;33,54;710;Fintech Gasola;São Paulo A;São Paulo A
+3364424;278760;28/03/2025;18:46;579,06;5,79;5,79;Diesel S10;Avilan - Porto Belo;0,01;579,05;100,01;711;Fintech Gasola;Jundiaí;Jundiaí
+3363203;278731;28/03/2025;14:40;163,42;3,89;3,89;Etanol C.;Cosampa;0,01;163,41;42,01;710;Fintech Gasola;São Paulo A;São Paulo A
+3362494;278731;28/03/2025;10:59;203,1;3,89;3,89;Etanol C.;Cosampa;0,01;203,09;52,21;710;Fintech Gasola;São Paulo A;São Paulo A
+3362208;272681;28/03/2025;09:51;175,15;5,79;5,79;Gasolina;Cosampa;0,01;175,14;30,25;706;Fintech Gasola;São Paulo A;São Paulo A
+3362154;272681;28/03/2025;09:38;147,64;5,79;5,79;Gasolina;Cosampa;0;147,64;25,5;706;Fintech Gasola;São Paulo A;São Paulo A
+3361840;272681;28/03/2025;08:44;184,87;5,79;5,79;Gasolina;Cosampa;0;184,87;31,93;706;Fintech Gasola;São Paulo A;São Paulo A
+3361660;272681;28/03/2025;08:16;157,12;3,89;3,89;Etanol C.;Cosampa;0,01;157,11;40,39;706;Fintech Gasola;São Paulo A;São Paulo A
+3361478;272681;28/03/2025;07:49;175,03;5,79;5,79;Gasolina;Cosampa;0;175,03;30,23;706;Fintech Gasola;São Paulo A;São Paulo A
+3361313;272612;28/03/2025;07:20;143,42;3,89;3,89;Etanol C.;Santini;0;143,42;36,87;705;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil
+3359710;272681;27/03/2025;17:34;162,6;3,89;3,89;Etanol C.;Cosampa;0;162,6;41,8;706;Fintech Gasola;São Paulo A;São Paulo A
+3358835;272570;27/03/2025;14:16;249,2;5,79;5,79;Gasolina;Axx Care;0;249,2;43,04;703;Fintech Gasola;Matriz;Matriz
+3357626;272681;27/03/2025;09:12;235,02;5,79;5,79;Gasolina;Cosampa;0;235,02;40,59;706;Fintech Gasola;São Paulo A;São Paulo A
+3357264;272681;27/03/2025;08:15;266,22;5,79;5,79;Gasolina;Cosampa;0;266,22;45,98;706;Fintech Gasola;São Paulo A;São Paulo A
+3355547;272681;26/03/2025;18:33;146,07;3,99;3,99;Etanol C.;Cosampa;0;146,07;36,61;706;Fintech Gasola;São Paulo A;São Paulo A
+3353529;272681;26/03/2025;10:18;394,17;5,87;5,87;Diesel S10;Cosampa;0;394,17;67,15;706;Fintech Gasola;São Paulo A;São Paulo A
+3353497;272681;26/03/2025;10:14;289,98;5,87;5,87;Diesel S10;Cosampa;0;289,98;49,4;706;Fintech Gasola;São Paulo A;São Paulo A
+3353374;272681;26/03/2025;09:49;152,38;3,99;3,99;Etanol C.;Cosampa;0;152,38;38,19;706;Fintech Gasola;São Paulo A;São Paulo A
+3353204;272681;26/03/2025;09:17;216,49;5,79;5,79;Gasolina;Cosampa;0;216,49;37,39;706;Fintech Gasola;São Paulo A;São Paulo A
+3353100;272681;26/03/2025;09:00;231,43;5,79;5,79;Gasolina;Cosampa;0;231,43;39,97;706;Fintech Gasola;São Paulo A;São Paulo A
+3352982;272681;26/03/2025;08:45;166,46;5,79;5,79;Gasolina;Cosampa;0;166,46;28,75;706;Fintech Gasola;São Paulo A;São Paulo A
+3352523;272612;26/03/2025;07:33;145,52;3,99;3,99;Etanol C.;Santini;0,01;145,51;36,47;705;Fintech Gasola;Pompe Gás Versátil;Pompe Gás Versátil

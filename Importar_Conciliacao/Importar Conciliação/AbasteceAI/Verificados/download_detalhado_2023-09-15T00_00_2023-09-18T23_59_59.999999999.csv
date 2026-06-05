@@ -1,0 +1,27 @@
+﻿CNPJ;Loja;Status;Código da Transação*;Data;Hora;Canal de venda;Valor da Compra;Taxa da Transação;Crédito Recebido;Valor a receber;Data Pagamento 1;Valor do Pagamento 1
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140797602;16/09/2023;06:27:54;Posto;R$ 300,00;R$ 5,67;R$ 300,00;-R$ 305,67;17/10/2023;-R$ 5,67
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140813294;16/09/2023;09:27:46;Posto;R$ 307,05;R$ 5,80;R$ 0,00;R$ 301,25;17/10/2023;R$ 301,25
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140813563;16/09/2023;09:30:03;Posto;R$ 59,52;R$ 1,13;R$ 0,00;R$ 58,39;17/10/2023;R$ 58,39
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140814328;16/09/2023;09:36:11;Posto;R$ 80,88;R$ 1,53;R$ 0,00;R$ 79,35;17/10/2023;R$ 79,35
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140815211;16/09/2023;09:43:04;Posto;R$ 150,31;R$ 2,84;R$ 0,00;R$ 147,47;17/10/2023;R$ 147,47
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140819827;16/09/2023;10:17:46;Posto;R$ 121,09;R$ 2,29;R$ 0,00;R$ 118,80;17/10/2023;R$ 118,80
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140824567;16/09/2023;10:51:24;Posto;R$ 169,02;R$ 3,19;R$ 0,00;R$ 165,83;17/10/2023;R$ 165,83
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140828663;16/09/2023;11:20:52;Posto;R$ 100,00;R$ 1,89;R$ 100,00;-R$ 101,89;17/10/2023;-R$ 1,89
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140829896;16/09/2023;11:29:37;Posto;R$ 50,00;R$ 0,94;R$ 0,00;R$ 49,06;17/10/2023;R$ 49,06
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140840962;16/09/2023;12:51:12;Posto;R$ 151,17;R$ 2,86;R$ 151,17;-R$ 154,03;17/10/2023;-R$ 2,86
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140845223;16/09/2023;13:22:33;Posto;R$ 186,50;R$ 3,52;R$ 186,50;-R$ 190,02;17/10/2023;-R$ 3,52
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140848168;16/09/2023;13:48:28;Posto;R$ 150,00;R$ 2,83;R$ 0,00;R$ 147,17;17/10/2023;R$ 147,17
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140849758;16/09/2023;14:03:06;Posto;R$ 116,60;R$ 2,20;R$ 116,60;-R$ 118,80;17/10/2023;-R$ 2,20
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140852194;16/09/2023;14:23:58;Posto;R$ 100,00;R$ 1,89;R$ 0,00;R$ 98,11;17/10/2023;R$ 98,11
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140858892;16/09/2023;15:25:04;Posto;R$ 150,00;R$ 2,83;R$ 0,00;R$ 147,17;17/10/2023;R$ 147,17
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140859355;16/09/2023;15:29:23;Posto;R$ 260,09;R$ 4,92;R$ 260,09;-R$ 265,01;17/10/2023;-R$ 4,92
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140863723;16/09/2023;16:11:58;Posto;R$ 219,27;R$ 4,14;R$ 0,00;R$ 215,13;17/10/2023;R$ 215,13
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140865558;16/09/2023;16:29:12;Posto;R$ 205,00;R$ 3,87;R$ 205,00;-R$ 208,87;17/10/2023;-R$ 3,87
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140873756;16/09/2023;17:47:55;Posto;R$ 160,58;R$ 3,03;R$ 0,00;R$ 157,55;17/10/2023;R$ 157,55
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140875150;16/09/2023;18:01:36;Posto;R$ 143,12;R$ 2,70;R$ 143,12;-R$ 145,82;17/10/2023;-R$ 2,70
+55.021.638/0001-09;Auto Posto Moinho Ltda;Autorizado;ABA-140879509;16/09/2023;18:42:32;Posto;R$ 200,00;R$ 3,78;R$ 200,00;-R$ 203,78;17/10/2023;-R$ 3,78
+55.021.638/0001-09;Auto Posto Moinho Ltda;Cancelado;ABA-140884157;16/09/2023;19:29:47;Posto;R$ 300,00;R$ 5,67;R$ 300,00;-R$ 305,67;17/10/2023;-R$ 5,67
+;;;;;;;;;;;;
+;;;;;;;R$ 7.060,80;R$ 133,41;R$ 3.956,76;-R$ 986,13;;
+;;;;;;;;;;;;
+"* Para visualizar os detalhes de uma venda, busque pelo código da transação na tela de ""Vendas Fechadas"" ou ""Vendas de Hoje""";;;;;;;;;;;;

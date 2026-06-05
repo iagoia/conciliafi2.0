@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conciliador</title>
+    
+    <!-- Google Fonts: Outfit (títulos) e Inter (corpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js para gráficos elegantes -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════════════════
+           SISTEMA DE DESIGN & VARIÁVEIS (CSS VARIABLES)
+           ═══════════════════════════════════════════════════════════════════════════ */
+        :root {
+            --bg-color: #070a13;
+            --card-bg: rgba(17, 25, 40, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-darker: #64748b;
+            
+            --accent-primary: #3b82f6; /* azul */
+            --accent-primary-glow: rgba(59, 130, 246, 0.25);
+            --accent-secondary: #6366f1; /* indigo */
+            
+            --color-success: #10b981; /* verde */
+            --color-success-bg: rgba(16, 185, 129, 0.1);
+            --color-danger: #f43f5e; /* rosa/vermelho */
+            --color-danger-bg: rgba(244, 63, 94, 0.1);
+            --color-warning: #f59e0b; /* laranja */
+            
+            --font-outfit: 'Outfit', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-blur: blur(12px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           ESTILOS GERAIS
+           ═══════════════════════════════════════════════════════════════════════════ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-inter);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           CABEÇALHO
+           ═══════════════════════════════════════════════════════════════════════════ */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-area {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 0.8rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-area svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        h1 {
+            font-family: var(--font-outfit);
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           COMPONENTE GLASSMORPHISM (CARDS)
+           ═══════════════════════════════════════════════════════════════════════════ */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+            padding: 2.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           FORMULÁRIO DE CONFIGURAÇÃO (UPLOAD E DATAS)
+           ═══════════════════════════════════════════════════════════════════════════ */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Drag and Drop Zone */
+        .upload-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            background: rgba(255, 255, 255, 0.01);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 220px;
+        }
+
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--accent-primary);
+            background: rgba(59, 130, 246, 0.04);
+            box-shadow: 0 0 20px var(--accent-primary-glow);
+        }
+
+        .upload-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .upload-zone:hover .upload-icon {
+            transform: scale(1.1);
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .upload-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent-primary);
+            fill: none;
+        }
+
+        .upload-text h3 {
+            font-family: var(--font-outfit);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .upload-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .file-selected-badge {
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            margin-top: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #93c5fd;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .file-selected-badge svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Inputs e Form Control */
+        .form-inputs {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .input-group-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-styled {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            padding: 0.8rem 1rem;
+            font-family: var(--font-inter);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition-smooth);
+            width: 100%;
+        }
+
+        .input-styled:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        /* Botão de Submissão */
+        .btn-conciliar {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            font-family: var(--font-outfit);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            margin-top: auto;
+        }
+
+        .btn-conciliar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-conciliar:active {
+            transform: translateY(0);
+        }
+
+        .btn-conciliar:disabled {
+            background: var(--text-darker);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.5;
+        }
+
+        /* Spinner Animado */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           DASHBOARD DE RESULTADOS (PAINEL GERAL)
+           ═══════════════════════════════════════════════════════════════════════════ */
+        #results-dashboard {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dashboard-visible {
+            display: block !important;
+            opacity: 1 !important;
+        }
+
+        /* Grid de Cards de Métricas */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            border-radius: 20px;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            transition: var(--transition-smooth);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* Card 1: Volume Bruto */
+        .card-bruto {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.05);
+        }
+        .card-bruto .metric-value {
+            color: #fbbf24;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+        }
+
+        /* Card 2: Taxas */
+        .card-taxas {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.05);
+        }
+        .card-taxas .metric-value {
+            color: #fca5a5;
+            text-shadow: 0 0 15px rgba(252, 165, 165, 0.2);
+        }
+
+        /* Card 3: Volume Líquido */
+        .card-volume {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+        }
+        .card-volume .metric-value {
+            color: #60a5fa;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
+        }
+
+        /* Card 4: Volume Repasse */
+        .card-repasse {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);
+        }
+        .card-repasse .metric-value {
+            color: #34d399;
+            text-shadow: 0 0 15px rgba(52, 211, 153, 0.2);
+        }
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: var(--font-outfit);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-sub {
+            color: var(--text-darker);
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-sub span {
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           VISUALIZAÇÃO (GRÁFICO E INFORMAÇÕES EXTRAS)
+           ═══════════════════════════════════════════════════════════════════════════ */
+        .visual-section {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .visual-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+
+        .stats-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats-item-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-item-value {
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           TABELA DE TRANSAÇÕES
+           ═══════════════════════════════════════════════════════════════════════════ */
+        .table-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .table-title {
+            font-family: var(--font-outfit);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .search-container {
+            width: 300px;
+            position: relative;
+        }
+
+        @media (max-width: 600px) {
+            .search-container {
+                width: 100%;
+            }
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Badges de Tipo */
+        .badge-tipo {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-credito {
+            background-color: var(--color-success-bg);
+            color: var(--color-success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-estorno {
+            background-color: var(--color-danger-bg);
+            color: var(--color-danger);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+
+        .badge-pix {
+            background-color: rgba(50, 188, 173, 0.1);
+            color: #32bcad;
+            border: 1px solid rgba(50, 188, 173, 0.2);
+        }
+
+        .badge-debito {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .td-valor {
+            font-family: var(--font-outfit);
+            font-weight: 600;
+        }
+
+        .td-valor-negativo {
+            color: var(--color-danger);
+        }
+
+        /* Paginação */
+        .pagination-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-page {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-page:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-page:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           SISTEMA DE NOTIFICAÇÃO (TOASTS) & ANIMAÇÕES
+           ═══════════════════════════════════════════════════════════════════════════ */
+        #toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            color: white;
+            min-width: 300px;
+            max-width: 450px;
+            padding: 1rem 1.2rem;
+            backdrop-filter: var(--glass-blur);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition-smooth);
+        }
+
+        .toast-error {
+            border-left-color: var(--color-danger);
+        }
+
+        .toast-success {
+            border-left-color: var(--color-success);
+        }
+
+        .toast-info {
+            border-left-color: var(--accent-primary);
+        }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .toast-message {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-darker);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .toast-close:hover {
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           ANIMAÇÕES CSS KEYFRAMES
+           ═══════════════════════════════════════════════════════════════════════════ */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Estilos para Arquivos Locais */
+        .local-file-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            position: relative;
+        }
+
+        .local-file-card:hover {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .local-file-card.selected {
+            background: rgba(59, 130, 246, 0.12);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary-glow);
+        }
+
+        .local-file-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition-smooth);
+            color: var(--text-muted);
+        }
+
+        .local-file-card:hover .local-file-icon {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .local-file-card.selected .local-file-icon {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .local-file-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .local-file-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0.2rem;
+        }
+
+        .local-file-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .local-file-size {
+            color: var(--text-darker);
+            font-size: 0.75rem;
+        }
+
+        .local-file-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-downloads { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-documents { background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
+        .badge-desktop { background: rgba(236, 72, 153, 0.1); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.2); }
+        .badge-current { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-onedrive { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+        
+        /* Custom scrollbar para o grid */
+        #local-files-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        #local-files-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 10px;
+        }
+        #local-files-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        #local-files-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Estilos para abas de filtro Débito/Crédito */
+        .filter-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted) !important;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .filter-tab:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .filter-tab.active {
+            color: white !important;
+            background: var(--accent-primary) !important;
+            box-shadow: 0 4px 12px var(--accent-primary-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Banner de Atualização -->
+        <div id="update-banner" class="glass-card" style="display: none; padding: 1rem 1.5rem; margin-bottom: 2rem; border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08); display: flex; align-items: center; justify-content: space-between; gap: 1rem; animation: slideInDown 0.5s ease;">
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <div style="background: rgba(245, 158, 11, 0.15); padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.1rem;">Nova versão disponível (<span id="latest-version-text">1.0.1</span>)</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;"><span id="changelog-text">Novidades e correções de bugs.</span></p>
+                </div>
+            </div>
+            <a id="download-update-btn" href="#" target="_blank" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2); border: none; border-radius: 10px; cursor: pointer; text-decoration: none; color: white; display: inline-flex; align-items: center; gap: 0.4rem; transition: var(--transition-smooth); font-weight: 600;">
+                Baixar Agora
+            </a>
+        </div>
+
+        <!-- Cabeçalho -->
+        <header>
+            <div class="logo-area">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+                </svg>
+            </div>
+            <h1>Conciliador</h1>
+            <p class="subtitle">Audite relatórios de diferentes adquirentes com conciliação automática</p>
+        </header>
+
+        <!-- Seção de Arquivos Locais Detectados -->
+        <div class="glass-card" id="local-files-section" style="margin-bottom: 2rem; display: none; animation: fadeInUp 0.8s ease-out;">
+            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;">
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 0.5rem; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: var(--accent-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="font-family: var(--font-outfit); font-size: 1.3rem; font-weight: 700;">Relatórios Financeiros no Computador</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">Encontramos estes arquivos compatíveis nas suas pastas comuns. Clique em um para carregar instantaneamente.</p>
+                </div>
+            </div>
+            
+            <div id="local-files-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; max-height: 250px; overflow-y: auto; padding-right: 0.5rem; border-radius: 12px;">
+                <!-- Preenchido via Javascript -->
+            </div>
+        </div>
+
+        <!-- Formulário e Zona de Upload -->
+        <div class="config-grid">
+            <!-- Zona de Upload de Arquivo -->
+            <div class="glass-card">
+                <div class="upload-zone" id="drop-zone">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2v14M5 12l7-7 7 7M5 20h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Selecione ou arraste seu relatório</h3>
+                        <p>Formatos suportados: CSV, TXT, TSV, XLSX, XLS</p>
+                    </div>
+                    <input type="file" id="file-input" accept=".csv,.txt,.tsv,.xlsx,.xls">
+                    
+                    <div class="file-selected-badge" id="file-badge">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span id="file-name-text">Nenhum arquivo selecionado</span>
+                    </div>
+
+                    <div id="file-analysis-info" style="display: none; margin-top: 1rem; font-size: 0.85rem; color: #34d399; padding: 0.6rem; border-radius: 12px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); width: 100%; max-width: 420px; text-align: center; justify-content: center; align-items: center; gap: 0.5rem; animation: scaleIn 0.3s ease;">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; flex-shrink: 0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span id="analysis-text">Analisando datas do arquivo...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parâmetros de Datas e Envio -->
+            <div class="glass-card form-inputs">
+                <div class="input-group-row">
+                    <div class="control-group">
+                        <label for="date-start">Início (Data e Hora)</label>
+                        <input type="datetime-local" id="date-start" class="input-styled" required>
+                    </div>
+                    <div class="control-group">
+                        <label for="date-end">Fim (Data e Hora)</label>
+                        <input type="datetime-local" id="date-end" class="input-styled" required>
+                    </div>
+                </div>
+                
+                <button id="btn-submit" class="btn-conciliar" disabled>
+                    <span class="spinner" id="btn-spinner"></span>
+                    <span id="btn-text">Conciliar Relatório</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard de Resultados -->
+        <div id="results-dashboard">
+            
+            <!-- Cards de Métricas -->
+            <div class="metrics-grid">
+                <!-- Card 1: Volume Bruto -->
+                <div class="metric-card card-bruto">
+                    <div>
+                        <div class="metric-label">Volume Bruto Total</div>
+                        <div class="metric-value" id="val-volume-bruto">R$ 0,00</div>
+                    </div>
+                    <div class="metric-sub">
+                        <div>Transações: <span id="val-qtd-total">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Custo com Taxas -->
+                <div class="metric-card card-taxas">
+                    <div>
+                        <div class="metric-label">Taxas Descontadas</div>
+                        <div class="metric-value" id="val-volume-taxa">R$ 0,00</div>
+                    </div>
+                    <div class="metric-sub">
+                        <div>Custo da Operação</div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Volume Líquido -->
+                <div class="metric-card card-volume">
+                    <div>
+                        <div class="metric-label">Volume Líquido Estimado</div>
+                        <div class="metric-value" id="val-volume-liquido">R$ 0,00</div>
+                    </div>
+                    <div class="metric-sub" style="display: flex; flex-direction: column; gap: 0.35rem; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem; margin-top: 0.3rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                            <span>Crédito:</span>
+                            <span><strong id="val-creditos">R$ 0,00</strong> (<span id="val-qtd-creditos">0</span>)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                            <span>Débito:</span>
+                            <span><strong id="val-debitos">R$ 0,00</strong> (<span id="val-qtd-debitos">0</span>)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                            <span>Pix:</span>
+                            <span><strong id="val-pix">R$ 0,00</strong> (<span id="val-qtd-pix">0</span>)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Volume de Repasse -->
+                <div class="metric-card card-repasse">
+                    <div>
+                        <div class="metric-label">Volume de Repasse Pago</div>
+                        <div class="metric-value" id="val-volume-repasse">R$ 0,00</div>
+                    </div>
+                    <div class="metric-sub" style="display: flex; flex-direction: column; gap: 0.35rem; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem; margin-top: 0.3rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                            <span>Estornos:</span>
+                            <span><strong id="val-estornos">R$ 0,00</strong> (<span id="val-qtd-estornos">0</span>)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                            <span>Status:</span>
+                            <span style="font-weight: 600; color: #34d399;">Conciliado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tracing de Delegação de Agentes -->
+            <div class="glass-card" id="agent-tracer-card" style="margin-bottom: 2rem; display: none;">
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem;">
+                    <div style="background: rgba(167, 139, 250, 0.1); padding: 0.5rem; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: #a78bfa; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l-7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="font-family: var(--font-outfit); font-size: 1.3rem; font-weight: 700; color: #a78bfa;">Trace e Delegação do Agente</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Fluxo operacional: Governança do Agente de Triagem e Acordo Operacional com Especialista_LUKOS.</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 0.8rem; color: #a78bfa; display: flex; align-items: center; gap: 0.4rem;">
+                            <span style="display: inline-block; width: 8px; height: 8px; background: #a78bfa; border-radius: 50%;"></span>
+                            Logs de Tracing
+                        </h4>
+                        <div id="tracer-logs" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 12px; font-family: monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; color: #e2e8f0; line-height: 1.5; text-align: left;">
+                            <!-- Inserido via JS -->
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 0.8rem; color: #10b981; display: flex; align-items: center; gap: 0.4rem;">
+                            <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>
+                            Payload de Delegação (JSON)
+                        </h4>
+                        <pre id="tracer-payload" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 12px; font-family: monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; color: #10b981; margin: 0; text-align: left;"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico e Estatísticas Secundárias -->
+            <div class="visual-section">
+                <!-- Gráfico de Tendência (Chart.js) -->
+                <div class="glass-card">
+                    <h3 class="table-title" style="margin-bottom: 1.5rem;">Tendência Diária de Volume</h3>
+                    <div class="chart-container">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Estatísticas de Qualidade do Relatório -->
+                <div class="glass-card">
+                    <h3 class="table-title" style="margin-bottom: 1.5rem;">Qualidade dos Dados</h3>
+                    <ul class="stats-list">
+                        <li class="stats-item">
+                            <span class="stats-item-label">Nome do Arquivo</span>
+                            <span class="stats-item-value badge-info" id="stat-filename">-</span>
+                        </li>
+                        <li class="stats-item">
+                            <span class="stats-item-label">Total de Registros Brutos</span>
+                            <span class="stats-item-value" id="stat-total-bruto">0</span>
+                        </li>
+                        <li class="stats-item">
+                            <span class="stats-item-label">Registros Descartados (Nulos/Inválidos)</span>
+                            <span class="stats-item-value" id="stat-descartados" style="color: var(--color-warning);">0</span>
+                        </li>
+                        <li class="stats-item">
+                            <span class="stats-item-label">Período Selecionado</span>
+                            <span class="stats-item-value" id="stat-periodo" style="font-size: 0.85rem;">-</span>
+                        </li>
+                    </ul>
+                    
+                    <div id="descartados-detalhes-container" style="margin-top: 1.5rem; display: none;">
+                        <h4 style="font-size: 0.95rem; color: #f43f5e; margin-bottom: 0.8rem; font-family: var(--font-outfit); font-weight: 700;">Detalhamento de Descartes</h4>
+                        <div id="descartados-list" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 0.8rem; border-radius: 12px; max-height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; line-height: 1.4; color: #fb7185; text-align: left;">
+                            <!-- Preenchido via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela Detalhada de Transações -->
+            <div class="glass-card">
+                <div class="table-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                    <h3 class="table-title" style="margin: 0;">Registros Detalhados (Período)</h3>
+                    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                        <!-- Seletor de Tipo (Filtro Crédito/Débito/Pix/Estorno) -->
+                        <div class="filter-tabs" style="display: inline-flex; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.25rem; border-radius: 12px; gap: 0.2rem;">
+                            <button class="filter-tab active" data-type="todos">Todas</button>
+                            <button class="filter-tab" data-type="credito">Crédito</button>
+                            <button class="filter-tab" data-type="debito">Débito</button>
+                            <button class="filter-tab" data-type="pix">Pix</button>
+                            <button class="filter-tab" data-type="estorno">Estornos</button>
+                        </div>
+                        
+                        <!-- Seletor de Terminal -->
+                        <select id="filter-terminal" class="input-styled" style="width: 190px; margin: 0; padding: 0.45rem 0.8rem; border-radius: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                            <option value="todos">Todos os Terminais</option>
+                        </select>
+                        
+                        <div class="search-container" style="margin: 0;">
+                            <input type="text" id="search-input" class="input-styled" placeholder="Buscar por valor ou tipo..." style="width: 240px; margin: 0;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th style="text-align: right;">Valor Bruto</th>
+                                <th style="text-align: right;">Taxas</th>
+                                <th style="text-align: right;">Valor Líquido</th>
+                                <th style="text-align: right;">Valor Repasse</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Inserido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Controles de Paginação -->
+                <div class="pagination-row">
+                    <div id="pagination-info">Mostrando 0 de 0 transações</div>
+                    <div class="pagination-buttons">
+                        <button class="btn-page" id="btn-prev" disabled>Anterior</button>
+                        <button class="btn-page" id="btn-next" disabled>Próxima</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Container das Notificações -->
+    <div id="toast-container"></div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════════════════════════════
+           GERENCIAMENTO DE ESTADO E INICIALIZAÇÃO
+           ═══════════════════════════════════════════════════════════════════════════ */
+        let selectedFile = null;
+        let selectedFileBase64 = null;
+        let selectedLocalPath = null; // Caminho local do arquivo selecionado no PC
+        let originalTransactions = [];
+        let filteredTransactions = [];
+        let chartInstance = null;
+        let filtroTipo = 'todos'; // 'todos', 'credito', 'debito'
+        
+        // Paginação
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // Elementos DOM
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileBadge = document.getElementById('file-badge');
+        const fileNameText = document.getElementById('file-name-text');
+        const dateStartInput = document.getElementById('date-start');
+        const dateEndInput = document.getElementById('date-end');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const btnText = document.getElementById('btn-text');
+        const searchInput = document.getElementById('search-input');
+        const terminalSelect = document.getElementById('filter-terminal');
+        
+        const resultsDashboard = document.getElementById('results-dashboard');
+        
+        const fileAnalysisInfo = document.getElementById('file-analysis-info');
+        const analysisText = document.getElementById('analysis-text');
+        
+        // Configurar datas padrões (mês atual)
+        const hoje = new Date();
+        const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+        
+        dateStartInput.value = formatarDataInput(inicioMes, false);
+        dateEndInput.value = formatarDataInput(hoje, true);
+
+        // Carregar arquivos locais do computador ao iniciar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarArquivosLocais();
+            checarAtualizacao();
+        });
+
+        async function checarAtualizacao() {
+            try {
+                const response = await fetch('/api/checar_atualizacao');
+                const data = await response.json();
+                if (response.ok && data.update_available) {
+                    const banner = document.getElementById('update-banner');
+                    const verText = document.getElementById('latest-version-text');
+                    const changelogText = document.getElementById('changelog-text');
+                    const downloadBtn = document.getElementById('download-update-btn');
+                    
+                    verText.textContent = data.latest_version;
+                    changelogText.textContent = data.novidades || 'Melhorias de desempenho e correções gerais.';
+                    downloadBtn.href = data.url_download || '#';
+                    banner.style.display = 'flex';
+                }
+            } catch (error) {
+                console.error("Erro ao verificar atualizações:", error);
+            }
+        }
+
+        // Habilitar botão após configuração inicial
+        validarFormulario();
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           GERENCIADORES DE EVENTO — DRAG & DROP E ARQUIVOS
+           ═══════════════════════════════════════════════════════════════════════════ */
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                processarArquivo(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                processarArquivo(e.target.files[0]);
+            }
+        });
+
+        async function analisarArquivoNoBackend(options) {
+            const { filename, base64Data, caminhoLocal } = options;
+
+            fileAnalysisInfo.style.display = 'inline-flex';
+            analysisText.textContent = "Analisando datas do arquivo...";
+            fileAnalysisInfo.style.borderColor = "rgba(255, 255, 255, 0.1)";
+            fileAnalysisInfo.style.color = "var(--text-muted)";
+            fileAnalysisInfo.style.background = "rgba(255, 255, 255, 0.02)";
+
+            // Desabilitar botão enquanto analisa
+            btnSubmit.disabled = true;
+
+            try {
+                const requestPayload = {};
+                if (caminhoLocal) {
+                    requestPayload.caminho_local = caminhoLocal;
+                } else {
+                    requestPayload.filename = filename;
+                    requestPayload.file_data = base64Data;
+                }
+
+                const response = await fetch('/api/analisar_arquivo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestPayload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.status === 'success') {
+                    // Atualizar inputs com o range do arquivo
+                    dateStartInput.value = data.min_date;
+                    dateEndInput.value = data.max_date;
+                    
+                    // Limpar restrições anteriores de min e max do picker
+                    dateStartInput.removeAttribute('min');
+                    dateStartInput.removeAttribute('max');
+                    dateEndInput.removeAttribute('min');
+                    dateEndInput.removeAttribute('max');
+
+                    // Exibir informações na tela
+                    analysisText.innerHTML = `Período detectado: <strong>${data.min_date_formatted.substring(0, 16)}</strong> até <strong>${data.max_date_formatted.substring(0, 16)}</strong>`;
+                    fileAnalysisInfo.style.borderColor = "rgba(16, 185, 129, 0.15)";
+                    fileAnalysisInfo.style.color = "#34d399";
+                    fileAnalysisInfo.style.background = "rgba(16, 185, 129, 0.08)";
+                    
+                    mostrarToast('Arquivo Analisado', `Período sugerido automaticamente: ${data.min_date_formatted.substring(0, 10)} a ${data.max_date_formatted.substring(0, 10)}`, 'success');
+                    validarFormulario();
+                } else {
+                    fileAnalysisInfo.style.display = 'none';
+                    mostrarToast('Erro de Análise', data.message || 'Não foi possível extrair o período de datas.', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                fileAnalysisInfo.style.display = 'none';
+                mostrarToast('Erro de Conexão', 'Falha ao conectar no servidor para analisar o arquivo.', 'error');
+            }
+        }
+
+        function processarArquivo(file) {
+            const extensao = file.name.split('.').pop().toLowerCase();
+            const formatosValidos = ['csv', 'txt', 'tsv', 'xlsx', 'xls'];
+            
+            if (!formatosValidos.includes(extensao)) {
+                mostrarToast('Formato Inválido', `O formato .${extensao} não é suportado. Envie um arquivo CSV, TXT ou Excel.`, 'error');
+                return;
+            }
+
+            // Desmarcar arquivos locais no grid
+            document.querySelectorAll('.local-file-card').forEach(c => c.classList.remove('selected'));
+            selectedLocalPath = null;
+
+            selectedFile = file;
+            fileNameText.textContent = `${file.name} (${formatarTamanhoArquivo(file.size)})`;
+            fileBadge.style.display = 'inline-flex';
+
+            // Converter para base64
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // O resultado vem no formato "data:application/octet-stream;base64,..."
+                // Precisamos remover o cabeçalho "data:*/*;base64," para enviar apenas a string base64 pura
+                const dataUrl = e.target.result;
+                selectedFileBase64 = dataUrl.split(',')[1];
+                analisarArquivoNoBackend({ filename: file.name, base64Data: selectedFileBase64 });
+            };
+            reader.onerror = function() {
+                mostrarToast('Erro na Leitura', 'Não foi possível ler o arquivo selecionado.', 'error');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Carregar lista de arquivos locais detectados pelo Python
+        async function carregarArquivosLocais() {
+            try {
+                const response = await fetch('/api/listar_arquivos_locais');
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success' && data.arquivos && data.arquivos.length > 0) {
+                    const grid = document.getElementById('local-files-grid');
+                    grid.innerHTML = '';
+                    
+                    data.arquivos.forEach(file => {
+                        const card = document.createElement('div');
+                        card.className = 'local-file-card';
+                        card.dataset.caminho = file.caminho;
+                        card.dataset.nome = file.nome;
+                        
+                        // Determinar o badge da pasta de origem
+                        let badgeClass = 'badge-current';
+                        let pastaNome = file.pasta_origem;
+                        const poLower = file.pasta_origem.toLowerCase();
+                        
+                        if (poLower.includes('download')) {
+                            badgeClass = 'badge-downloads';
+                            pastaNome = 'Downloads';
+                        } else if (poLower.includes('document')) {
+                            badgeClass = 'badge-documents';
+                            pastaNome = 'Documentos';
+                        } else if (poLower.includes('desktop')) {
+                            badgeClass = 'badge-desktop';
+                            pastaNome = 'Área de Trabalho';
+                        } else if (poLower.includes('onedrive')) {
+                            badgeClass = 'badge-onedrive';
+                            pastaNome = 'OneDrive';
+                        } else if (poLower === 'nova pasta' || poLower === 'nova_pasta') {
+                            badgeClass = 'badge-onedrive';
+                            pastaNome = 'Nova pasta';
+                        }
+                        
+                        card.innerHTML = `
+                            <div class="local-file-icon">
+                                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="local-file-info">
+                                <div class="local-file-name" title="${file.nome}">${file.nome}</div>
+                                <div class="local-file-meta">
+                                    <span class="local-file-badge ${badgeClass}">${pastaNome}</span>
+                                    <span class="local-file-size">${formatarTamanhoArquivo(file.tamanho)}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        card.addEventListener('click', () => selecionarArquivoLocal(card, file.caminho, file.nome));
+                        grid.appendChild(card);
+                    });
+                    
+                    document.getElementById('local-files-section').style.display = 'block';
+                }
+            } catch (error) {
+                console.error("Erro ao carregar arquivos locais:", error);
+            }
+        }
+
+        // Seleciona o arquivo local do grid ao clicar
+        function selecionarArquivoLocal(cardElement, caminho, nome) {
+            // Desmarcar todos os outros
+            document.querySelectorAll('.local-file-card').forEach(c => c.classList.remove('selected'));
+            
+            // Marcar este
+            cardElement.classList.add('selected');
+            
+            // Definir estados
+            selectedLocalPath = caminho;
+            selectedFile = null;
+            selectedFileBase64 = null;
+            
+            // Resetar input file
+            fileInput.value = '';
+            
+            // Mostrar badge
+            fileNameText.textContent = `${nome} (Arquivo Local)`;
+            fileBadge.style.display = 'inline-flex';
+            
+            // Analisar
+            analisarArquivoNoBackend({ caminhoLocal: caminho });
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           VALIDAÇÕES E FORMATADORES AUXILIARES
+           ═══════════════════════════════════════════════════════════════════════════ */
+        function formatarDataInput(data, isEnd = false) {
+            const ano = data.getFullYear();
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const dia = String(data.getDate()).padStart(2, '0');
+            const hora = isEnd ? "23:59" : "00:00";
+            return `${ano}-${mes}-${dia}T${hora}`;
+        }
+
+        function formatarTamanhoArquivo(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const tamanhos = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + tamanhos[i];
+        }
+
+        // Converter do formato YYYY-MM-DDTHH:MM (do input HTML datetime-local) para DD/MM/YYYY HH:MM:SS (para o backend python)
+        function formatarDataParaPython(dataStr, isEnd = false) {
+            const partesT = dataStr.split('T');
+            const dataParte = partesT[0]; // "YYYY-MM-DD"
+            const horaParte = partesT[1] || "00:00"; // "HH:MM"
+            
+            const partesData = dataParte.split('-');
+            if (partesData.length === 3) {
+                const segundos = isEnd ? "58" : "00";
+                return `${partesData[2]}/${partesData[1]}/${partesData[0]} ${horaParte}:${segundos}`;
+            }
+            return dataStr;
+        }
+
+        function validarFormulario() {
+            const dataInicio = dateStartInput.value;
+            const dataFim = dateEndInput.value;
+            
+            let valido = true;
+
+            if (!selectedLocalPath && (!selectedFile || !selectedFileBase64)) valido = false;
+            if (!dataInicio || !dataFim) valido = false;
+            
+            if (dataInicio && dataFim && new Date(dataInicio) > new Date(dataFim)) {
+                valido = false;
+            }
+
+            btnSubmit.disabled = !valido;
+        }
+
+        dateStartInput.addEventListener('change', validarFormulario);
+        dateEndInput.addEventListener('change', validarFormulario);
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           REQUISIÇÃO API & PROCESSAMENTO
+           ═══════════════════════════════════════════════════════════════════════════ */
+        btnSubmit.addEventListener('click', async () => {
+            if (!selectedLocalPath && (!selectedFile || !selectedFileBase64)) return;
+            
+            const dataInicioPy = formatarDataParaPython(dateStartInput.value, false);
+            const dataFimPy = formatarDataParaPython(dateEndInput.value, true);
+
+            // Iniciar animação de Loading
+            btnSubmit.disabled = true;
+            btnSpinner.style.display = 'inline-block';
+            btnText.textContent = 'Processando e Conciliando...';
+            
+            try {
+                const requestPayload = {
+                    data_inicio: dataInicioPy,
+                    data_fim: dataFimPy
+                };
+
+                if (selectedLocalPath) {
+                    requestPayload.caminho_local = selectedLocalPath;
+                } else {
+                    requestPayload.filename = selectedFile.name;
+                    requestPayload.file_data = selectedFileBase64;
+                }
+
+                const response = await fetch('/api/conciliar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestPayload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.resumo) {
+                    if (data.status === 'DISCREPANCIA_FINANCEIRA') {
+                        mostrarToast('Conciliação com Alerta', 'Discrepância financeira detectada (tolerância de R$ 0,02 excedida).', 'info');
+                    } else {
+                        mostrarToast('Conciliação Concluída', 'O relatório foi processado com sucesso!', 'success');
+                    }
+                    exibirResultados(data);
+                } else {
+                    mostrarToast('Erro de Processamento', data.message || 'Houve um erro ao processar a conciliação.', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                mostrarToast('Erro de Conexão', 'Não foi possível se conectar à API do servidor local.', 'error');
+            } finally {
+                // Restaurar estado do botão
+                btnSubmit.disabled = false;
+                btnSpinner.style.display = 'none';
+                btnText.textContent = 'Conciliar Relatório';
+            }
+        });
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           RENDERIZAÇÃO DO DASHBOARD E VISUALIZAÇÕES
+           ═══════════════════════════════════════════════════════════════════════════ */
+        function exibirResultados(data) {
+            const resumo = data.resumo;
+            originalTransactions = data.transacoes || [];
+            
+            // Preencher select de terminais
+            const terminais = [...new Set(originalTransactions.map(t => t.terminal).filter(Boolean))].sort();
+            terminalSelect.innerHTML = '<option value="todos">Todos os Terminais</option>';
+            terminais.forEach(term => {
+                const opt = document.createElement('option');
+                opt.value = term;
+                opt.textContent = `Terminal: ${term}`;
+                terminalSelect.appendChild(opt);
+            });
+            terminalSelect.value = 'todos';
+            
+            // Resetar estados de filtro e busca
+            filtroTipo = 'todos';
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            const tabAll = document.querySelector('.filter-tab[data-type="todos"]');
+            if (tabAll) tabAll.classList.add('active');
+            searchInput.value = '';
+            
+            aplicarFiltros();
+
+            // O aplicarFiltros() chamado acima já atualiza todas as métricas dos cards,
+            // a tabela e o gráfico de forma dinâmica.
+
+            // Atualizar Estatísticas de Qualidade
+            document.getElementById('stat-filename').textContent = resumo.arquivo;
+            document.getElementById('stat-total-bruto').textContent = resumo.total_registros;
+            document.getElementById('stat-descartados').textContent = resumo.descartados;
+            document.getElementById('stat-periodo').textContent = resumo.periodo;
+
+            // Detalhes de registros descartados
+            const descartadosContainer = document.getElementById('descartados-detalhes-container');
+            const descartadosList = document.getElementById('descartados-list');
+            
+            if (data.descartados_detalhes && data.descartados_detalhes.length > 0) {
+                descartadosContainer.style.display = 'block';
+                let listHtml = '';
+                data.descartados_detalhes.forEach(item => {
+                    const rowContent = Object.entries(item.conteudo)
+                        .map(([k, v]) => `${k}: "${v}"`)
+                        .join(', ');
+                    listHtml += `<div style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 0.3rem;">[Linha ${item.linha}]: ${rowContent}</div>`;
+                });
+                descartadosList.innerHTML = listHtml;
+            } else {
+                descartadosContainer.style.display = 'none';
+                descartadosList.innerHTML = '';
+            }
+
+            // Inicializar Gráfico
+            renderizarGrafico(data.chart_data);
+
+            // Resetar tabela
+            currentPage = 1;
+            searchInput.value = '';
+            atualizarTabela();
+
+            // Atualizar Tracer de Agente
+            const tracerCard = document.getElementById('agent-tracer-card');
+            const tracerLogs = document.getElementById('tracer-logs');
+            const tracerPayload = document.getElementById('tracer-payload');
+            
+            if (data.delegacao_trace) {
+                tracerCard.style.display = 'block';
+                
+                const trace = data.delegacao_trace;
+                const statusStr = data.status === 'success' ? 'SUCESSO' : data.status;
+                const statusColor = data.status === 'success' ? '#10b981' : '#f43f5e';
+                
+                let logsHtml = `
+                    <div style="margin-bottom: 0.8rem; color: #a78bfa;">[INFO] [Agent: Triagem_Nivel1] Recebido novo chamado para conciliação.</div>
+                    <div style="margin-bottom: 0.8rem; color: #60a5fa;">[INFO] [Agent: Triagem_Nivel1] Analisando metadados do arquivo: <strong>${trace.contexto.nome_arquivo}</strong></div>
+                    <div style="margin-bottom: 0.8rem; color: #60a5fa;">[INFO] [Agent: Triagem_Nivel1] Adquirente detectada: <strong>${trace.contexto.adquirente_detectada.toUpperCase()}</strong></div>
+                    <div style="margin-bottom: 0.8rem; color: #fbbf24;">[INFO] [Agent: Triagem_Nivel1] Encaminhando tarefa para o especialista técnico <strong>${trace.alvo}</strong>...</div>
+                    <div style="margin-bottom: 0.8rem; color: #a78bfa;">[INFO] [Agent: Especialista_LUKOS] Iniciando processamento...</div>
+                    <div style="margin-bottom: 0.8rem; color: #e2e8f0;">[INFO] [Agent: Especialista_LUKOS] Higienização monetária e ordenação semântica aplicadas.</div>
+                    <div style="margin-bottom: 0.8rem; color: #e2e8f0;">[INFO] [Agent: Especialista_LUKOS] Mapeamento de colunas realizado com sucesso.</div>
+                    <div style="margin-bottom: 0.8rem; color: ${statusColor};">[STATUS] [Agent: Especialista_LUKOS] Finalizado com status: <strong>${statusStr}</strong></div>
+                `;
+                
+                tracerLogs.innerHTML = logsHtml;
+                tracerPayload.textContent = JSON.stringify(trace, null, 2);
+            } else {
+                tracerCard.style.display = 'none';
+            }
+
+            // Tornar dashboard visível com animação
+            resultsDashboard.classList.add('dashboard-visible');
+            
+            // Scroll suave para visualização do dashboard
+            resultsDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function aplicarFiltros() {
+            const query = searchInput.value.toLowerCase().trim();
+            const selectedTerminal = terminalSelect.value;
+            
+            filteredTransactions = originalTransactions.filter(item => {
+                // Filtro de Meio de Pagamento (todos, credito, debito, pix, estorno)
+                const meio = item.meio_pagamento || 'Crédito';
+                if (filtroTipo === 'credito' && meio !== 'Crédito') return false;
+                if (filtroTipo === 'debito' && meio !== 'Débito') return false;
+                if (filtroTipo === 'pix' && meio !== 'Pix') return false;
+                if (filtroTipo === 'estorno' && meio !== 'Estorno') return false;
+                
+                // Filtro de Terminal
+                if (selectedTerminal !== 'todos' && item.terminal !== selectedTerminal) return false;
+
+                // Filtro de Texto
+                if (query === '') return true;
+
+                const tipoMatches = item.tipo.toLowerCase().includes(query);
+                const prodMatches = (item.produto || '').toLowerCase().includes(query);
+                const termMatches = (item.terminal || '').toLowerCase().includes(query);
+                const valorMatches = 
+                    item.valor_bruto_formatado.toLowerCase().includes(query) ||
+                    item.valor_liquido_formatado.toLowerCase().includes(query) ||
+                    item.valor_repasse_formatado.toLowerCase().includes(query) ||
+                    item.valor_taxa_formatado.toLowerCase().includes(query);
+                const dataMatches = item.data.includes(query);
+                return tipoMatches || prodMatches || termMatches || valorMatches || dataMatches;
+            });
+            
+            currentPage = 1;
+            atualizarTabela();
+            atualizarMetricasDinamicas();
+        }
+
+        function atualizarMetricasDinamicas() {
+            const selectedTerminal = terminalSelect.value;
+            
+            // Filtrar transações apenas pelo terminal selecionado para o cálculo dos cards
+            const txsParaMetricas = originalTransactions.filter(item => {
+                if (selectedTerminal !== 'todos' && item.terminal !== selectedTerminal) return false;
+                return true;
+            });
+            
+            let bruto = 0;
+            let taxa = 0;
+            let liquido = 0;
+            let repasse = 0;
+            
+            let credValor = 0;
+            let credQtd = 0;
+            let debValor = 0;
+            let debQtd = 0;
+            let pixValor = 0;
+            let pixQtd = 0;
+            let estValor = 0;
+            let estQtd = 0;
+            
+            txsParaMetricas.forEach(t => {
+                bruto += parseFloat(t.valor_bruto || 0);
+                taxa += parseFloat(t.valor_taxa || 0);
+                liquido += parseFloat(t.valor_liquido || 0);
+                repasse += parseFloat(t.valor_repasse || 0);
+                
+                const meio = t.meio_pagamento || 'Crédito';
+                const val = parseFloat(t.valor_liquido || 0);
+                
+                if (meio === 'Estorno') {
+                    estValor += val;
+                    estQtd += 1;
+                } else if (meio === 'Pix') {
+                    pixValor += val;
+                    pixQtd += 1;
+                } else if (meio === 'Débito') {
+                    debValor += val;
+                    debQtd += 1;
+                } else {
+                    credValor += val;
+                    credQtd += 1;
+                }
+            });
+            
+            // Formatador local
+            const fmt = (v) => {
+                const negativo = v < 0;
+                const valorAbs = Math.abs(v);
+                let formatado = valorAbs.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                return negativo ? `-${formatado}` : formatado;
+            };
+            
+            // Atualizar os elementos DOM dos cards
+            document.getElementById('val-volume-bruto').textContent = fmt(bruto);
+            document.getElementById('val-volume-taxa').textContent = fmt(taxa);
+            document.getElementById('val-volume-liquido').textContent = fmt(liquido);
+            document.getElementById('val-volume-repasse').textContent = fmt(repasse);
+            document.getElementById('val-qtd-total').textContent = txsParaMetricas.length;
+            
+            document.getElementById('val-creditos').textContent = fmt(credValor);
+            document.getElementById('val-qtd-creditos').textContent = credQtd;
+            
+            document.getElementById('val-debitos').textContent = fmt(debValor);
+            document.getElementById('val-qtd-debitos').textContent = debQtd;
+            
+            document.getElementById('val-pix').textContent = fmt(pixValor);
+            document.getElementById('val-qtd-pix').textContent = pixQtd;
+            
+            document.getElementById('val-estornos').textContent = fmt(estValor);
+            document.getElementById('val-qtd-estornos').textContent = estQtd;
+            
+            // Atualizar cor do volume líquido se for negativo
+            const volumeCard = document.querySelector('.card-volume');
+            const volumeValEl = document.getElementById('val-volume-liquido');
+            if (liquido < 0) {
+                if (volumeCard) volumeCard.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+                if (volumeValEl) volumeValEl.style.color = '#fb7185';
+            } else {
+                if (volumeCard) volumeCard.style.border = '1px solid rgba(59, 130, 246, 0.25)';
+                if (volumeValEl) volumeValEl.style.color = '#60a5fa';
+            }
+            
+            // Atualizar Gráfico com os dados filtrados
+            atualizarGraficoDinamico(txsParaMetricas);
+        }
+
+        function atualizarGraficoDinamico(txs) {
+            if (txs.length === 0) {
+                if (chartInstance) {
+                    chartInstance.destroy();
+                    chartInstance = null;
+                }
+                return;
+            }
+            
+            // Agrupar por data (DD/MM/AAAA)
+            const agrupado = {};
+            txs.forEach(t => {
+                const dataParte = t.data.split(' ')[0];
+                agrupado[dataParte] = (agrupado[dataParte] || 0) + parseFloat(t.valor_liquido || 0);
+            });
+            
+            // Ordenar as datas cronologicamente
+            const datasOrdenadas = Object.keys(agrupado).sort((a, b) => {
+                const partsA = a.split('/');
+                const partsB = b.split('/');
+                return new Date(partsA[2], partsA[1]-1, partsA[0]) - new Date(partsB[2], partsB[1]-1, partsB[0]);
+            });
+            
+            const valores = datasOrdenadas.map(d => agrupado[d]);
+            
+            renderizarGrafico({
+                labels: datasOrdenadas,
+                valores: valores
+            });
+        }
+
+        searchInput.addEventListener('input', aplicarFiltros);
+        terminalSelect.addEventListener('change', aplicarFiltros);
+
+        // Registrar clicks nos filtros Crédito/Débito/Pix/Estornos
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                filtroTipo = tab.dataset.type;
+                aplicarFiltros();
+            });
+        });
+
+        function atualizarTabela() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            const totalItems = filteredTransactions.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+            if (totalItems === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-darker); padding: 3rem 0;">Nenhuma transação encontrada.</td></tr>`;
+                document.getElementById('pagination-info').textContent = 'Mostrando 0 de 0 transações';
+                document.getElementById('btn-prev').disabled = true;
+                document.getElementById('btn-next').disabled = true;
+                return;
+            }
+
+            // Aplicar fatiamento da paginação
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+            const paginatedItems = filteredTransactions.slice(startIndex, endIndex);
+
+            paginatedItems.forEach(t => {
+                const tr = document.createElement('tr');
+                
+                const isNegative = t.valor < 0;
+                const valorClass = isNegative ? 'td-valor-negativo' : '';
+
+                // Determinar a badge
+                let badgeClass = 'badge-credito';
+                if (t.meio_pagamento === 'Estorno') badgeClass = 'badge-estorno';
+                else if (t.meio_pagamento === 'Pix') badgeClass = 'badge-pix';
+                else if (t.meio_pagamento === 'Débito') badgeClass = 'badge-debito';
+
+                let termHtml = t.terminal ? `<div style="font-size: 0.72rem; color: var(--text-darker); margin-top: 0.2rem; font-weight: 600; background: rgba(255,255,255,0.02); padding: 0.1rem 0.35rem; border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; display: inline-block;">POS: ${t.terminal}</div>` : '';
+
+                tr.innerHTML = `
+                    <td>
+                        <div>${t.data}</div>
+                        ${termHtml}
+                    </td>
+                    <td>
+                        <span class="badge-tipo ${badgeClass}">${t.meio_pagamento}</span>
+                        ${t.produto ? `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 500;">${t.produto}</div>` : ''}
+                    </td>
+                    <td style="text-align: right;" class="td-valor ${valorClass}">${t.valor_bruto_formatado}</td>
+                    <td style="text-align: right;" class="td-valor ${valorClass}">${t.valor_taxa_formatado}</td>
+                    <td style="text-align: right;" class="td-valor ${valorClass}">${t.valor_liquido_formatado}</td>
+                    <td style="text-align: right;" class="td-valor ${valorClass}">${t.valor_repasse_formatado}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Atualizar barra de paginação
+            document.getElementById('pagination-info').textContent = `Mostrando ${startIndex + 1} a ${endIndex} de ${totalItems} transações`;
+            
+            document.getElementById('btn-prev').disabled = (currentPage === 1);
+            document.getElementById('btn-next').disabled = (currentPage === totalPages);
+        }
+
+        function renderizarGrafico(chartData) {
+            const ctx = document.getElementById('volumeChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Estilos visuais elegantes para o gráfico de linha
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Volume Diário (R$)',
+                        data: chartData.valores,
+                        borderColor: '#3b82f6',
+                        borderWidth: 3,
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#60a5fa',
+                        pointBorderColor: '#070a13',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { family: 'Outfit', size: 13 },
+                            bodyFont: { family: 'Inter', size: 12 },
+                            padding: 12,
+                            borderColor: 'rgba(255, 255, 255, 0.08)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.parsed.y;
+                                    return 'Volume: ' + value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.03)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.03)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 },
+                                callback: function(value) {
+                                    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Os escutadores de prev/next utilizam a função principal atualizarTabela() definida anteriormente.
+
+        document.getElementById('btn-prev').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                atualizarTabela();
+            }
+        });
+
+        document.getElementById('btn-next').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                atualizarTabela();
+            }
+        });
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+           SISTEMA DE MENSAGENS DE TOAST
+           ═══════════════════════════════════════════════════════════════════════════ */
+        function mostrarToast(titulo, mensagem, tipo = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            
+            let icon = '';
+            if (tipo === 'success') {
+                icon = `<svg style="fill: var(--color-success); width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
+            } else if (tipo === 'error') {
+                icon = `<svg style="fill: var(--color-danger); width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`;
+            } else {
+                icon = `<svg style="fill: var(--accent-primary); width: 20px; height: 20px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>`;
+            }
+
+            toast.innerHTML = `
+                ${icon}
+                <div class="toast-content">
+                    <div class="toast-title">${titulo}</div>
+                    <div class="toast-message">${mensagem}</div>
+                </div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            container.appendChild(toast);
+
+            // Evento para fechar no clique do X
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(50px)';
+                setTimeout(() => toast.remove(), 300);
+            });
+
+            // Remover automaticamente após 5 segundos
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(50px)';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

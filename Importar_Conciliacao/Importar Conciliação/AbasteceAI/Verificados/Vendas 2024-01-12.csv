@@ -1,0 +1,26 @@
+﻿CNPJ;Loja;Status;Canal de venda;Código da Transação*;Data;Hora;Meio de Pagamento;Valor da Compra;Valor recebido;Total Taxas;Líquido a receber;Data Pagamento
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153239330;12/01/2024;21:13:00;Online;R$ 50,00;R$ 0,00;R$ 1,64;R$ 48,36;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153225211;12/01/2024;18:50:12;Online;R$ 30,00;R$ 0,00;R$ 0,99;R$ 29,01;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153222976;12/01/2024;18:32:45;Online;R$ 5,10;R$ 0,00;R$ 0,17;R$ 4,93;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153222976;12/01/2024;18:32:45;Online;R$ 457,83;R$ 0,00;R$ 15,06;R$ 442,77;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153222096;12/01/2024;18:26:08;Online;R$ 126,37;R$ 0,00;R$ 4,16;R$ 122,21;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153221487;12/01/2024;18:21:45;Dinheiro;R$ 174,00;R$ 174,00;R$ 4,16;R$ 169,84;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153214354;12/01/2024;17:27:34;Online;R$ 100,00;R$ 0,00;R$ 3,29;R$ 96,71;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153201780;12/01/2024;15:35:12;Online;R$ 3,23;R$ 0,00;R$ 0,11;R$ 3,12;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153201780;12/01/2024;15:35:12;Online;R$ 96,77;R$ 0,00;R$ 3,18;R$ 93,59;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153190848;12/01/2024;13:48:04;Online;R$ 295,97;R$ 0,00;R$ 9,74;R$ 286,23;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153179741;12/01/2024;11:54:38;Online;R$ 30,00;R$ 0,00;R$ 0,99;R$ 29,01;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153179741;12/01/2024;11:54:38;Online;R$ 130,00;R$ 0,00;R$ 4,28;R$ 125,72;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153177901;12/01/2024;11:35:33;Online;R$ 144,65;R$ 0,00;R$ 4,76;R$ 139,89;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153169783;12/01/2024;10:14:06;Dinheiro;R$ 200,00;R$ 200,00;R$ 4,78;R$ 195,22;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153167679;12/01/2024;09:53:14;Online;R$ 1,80;R$ 0,00;R$ 0,06;R$ 1,74;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153167679;12/01/2024;09:53:14;Online;R$ 183,98;R$ 0,00;R$ 6,05;R$ 177,93;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153166525;12/01/2024;09:42:06;Dinheiro;R$ 100,00;R$ 100,00;R$ 2,39;R$ 97,61;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153153960;12/01/2024;07:38:12;Online;R$ 8,20;R$ 0,00;R$ 0,27;R$ 7,93;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153153960;12/01/2024;07:38:12;Online;R$ 138,82;R$ 0,00;R$ 4,57;R$ 134,25;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153152266;12/01/2024;07:19:31;Online;R$ 5,73;R$ 0,00;R$ 0,19;R$ 5,54;15/01/2024
+20.555.976/0001-38;Auto Posto Lucas Garcez Eireli;Autorizado;Posto;ABA-153152266;12/01/2024;07:19:31;Online;R$ 106,28;R$ 0,00;R$ 3,50;R$ 102,78;15/01/2024
+;;;;;;;;;;;;
+;;;;;;;;R$ 2.388,73;R$ 474,00;R$ 74,34;R$ 2.314,39;
+;;;;;;;;;;;;
+"* Para visualizar os detalhes de uma venda, busque pelo código da transação na tela de ""Vendas Fechadas"" ou ""Vendas de Hoje""";;;;;;;;;;;;

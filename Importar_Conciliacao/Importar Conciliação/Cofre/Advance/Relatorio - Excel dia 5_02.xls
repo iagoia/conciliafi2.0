@@ -1,0 +1,779 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Worksheet</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table><div class="panel panel-default" id="PANELADV3041">
+            <div class="panel-heading">
+            <h2>RELATÓRIO  -  (ADV3041) AUTO POSTO JARDIM BOTANICO SP LTDA            </h2>   
+        </div>     
+        <div class="panel-body"> 
+            <button onclick="changeText(this)" type="button" class="DSHOW btn btn-default btn-block hidden-print" data-toggle="collapse" data-target="#ADV3041" aria-expanded="true">+ LISTAR DEPÓSITOS</button>             
+            <div id="ADV3041" class="collapse DSHOW" aria-expanded="true" style="">
+                <h2>DEPÓSITOS  -  (ADV3041) AUTO POSTO JARDIM BOTANICO SP LTDA                       </h2><table class="table table-hover">    
+
+                    <thead>  
+                        <tr>
+                            <th>Data Hora</th>
+                            <th>SETOR</th>
+                            <th>Usuário</th>
+                            <th>R$ 2,00</th>
+                            <th>R$ 5,00</th>
+                            <th>R$ 10,00</th>
+                            <th>R$ 20,00</th>
+                            <th>R$ 50,00</th>
+                            <th>R$ 100,00</th>
+                            <th>R$ 200,00</th>
+                            <th>Envelope N°</th>
+                            <th>Valor Total</th>
+							<th>Data Hora Site</th>
+							<th>Caixa</th>
+                        </tr>
+					</thead>
+                    <tbody id="DEPOSITOSADV3041">						
+                                      
+                    
+<tr>
+	<td>05/02/2024, 00:19:09</td>
+	<td>GERAL</td>
+	<td>12</td>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+	<td>2</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 00:19:11</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 00:29:58</td>
+	<td>GERAL</td>
+	<td>12</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 00:30:01</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 04:52:58</td>
+	<td>GERAL</td>
+	<td>12</td>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+	<td>2</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 04:53:00</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 05:38:19</td>
+	<td>GERAL</td>
+	<td>12</td>
+	<td>9</td>
+	<td>2</td>
+	<td>4</td>
+	<td>4</td>
+	<td>1</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;298,00</td>
+	<td>05/02/2024, 05:38:37</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 07:41:27</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>7</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;350,00</td>
+	<td>05/02/2024, 07:41:30</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 07:41:45</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>4</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;400,00</td>
+	<td>05/02/2024, 07:41:46</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 09:45:34</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>10</td>
+	<td>0</td>
+	<td>0</td>
+	<td>9</td>
+	<td>4</td>
+	<td>3</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;700,00</td>
+	<td>05/02/2024, 09:45:36</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:17:43</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>363459</td>
+	<td>R$&nbsp;60,00</td>
+	<td>05/02/2024, 10:17:43</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:18:26</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>363462</td>
+	<td>R$&nbsp;150,00</td>
+	<td>05/02/2024, 10:18:26</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:19:03</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>363460</td>
+	<td>R$&nbsp;121,00</td>
+	<td>05/02/2024, 10:19:03</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:19:41</td>
+	<td>GERAL</td>
+	<td>02</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>363461</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 10:19:42</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:49:24</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>5</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;500,00</td>
+	<td>05/02/2024, 10:49:25</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 10:49:44</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>2</td>
+	<td>2</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;300,00</td>
+	<td>05/02/2024, 10:49:45</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 12:41:52</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>2</td>
+	<td>2</td>
+	<td>1</td>
+	<td>0</td>
+	<td>R$&nbsp;500,00</td>
+	<td>05/02/2024, 12:41:53</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 12:43:50</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>0</td>
+	<td>1</td>
+	<td>2</td>
+	<td>12</td>
+	<td>5</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;615,00</td>
+	<td>05/02/2024, 12:44:01</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 13:56:32</td>
+	<td>GERAL</td>
+	<td>03</td>
+	<td>7</td>
+	<td>3</td>
+	<td>9</td>
+	<td>6</td>
+	<td>3</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;489,00</td>
+	<td>05/02/2024, 13:56:47</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 18:46:18</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>6</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;300,00</td>
+	<td>05/02/2024, 18:47:35</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 19:33:03</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>3</td>
+	<td>4</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;550,00</td>
+	<td>05/02/2024, 19:33:06</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 20:04:31</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>4</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;300,00</td>
+	<td>05/02/2024, 20:04:39</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 21:23:53</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>5</td>
+	<td>2</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;450,00</td>
+	<td>05/02/2024, 21:23:55</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 22:04:35</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>4</td>
+	<td>2</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;400,00</td>
+	<td>05/02/2024, 22:04:36</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 22:18:22</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>8</td>
+	<td>1</td>
+	<td>0</td>
+	<td>19</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;401,00</td>
+	<td>05/02/2024, 22:18:25</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 22:56:54</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>2</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 22:56:56</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>05/02/2024, 23:55:36</td>
+	<td>GERAL</td>
+	<td>05</td>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+	<td>2</td>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>R$&nbsp;100,00</td>
+	<td>05/02/2024, 23:55:38</td>
+	<td>-</td>
+</tr></tbody>
+                </table>
+            </div>
+            <div class="panel-body DSHOW  injeta-tbl">
+                    <h2>DEPÓSITOS TOTAIS  -  (ADV3041) AUTO POSTO JARDIM BOTANICO SP LTDA                        </h2><table id="exampleXXX" class="table table-hover">
+                        <thead>
+                           
+                            <tr>
+                                <th>TIPO</th>
+                                <th>SETOR</th>
+                                <th>Usuário</th>
+                                <th>R$ 2,00</th>
+                                <th>R$ 5,00</th>
+                                <th>R$ 10,00</th>
+                                <th>R$ 20,00</th>
+                                <th>R$ 50,00</th>
+                                <th>R$ 100,00</th>
+                                <th>R$ 200,00</th>
+                                <th>Qte de Notas</th>
+                                <th>R$ Notas</th>
+                                <th>Qte Envelopes</th>
+                                <th>R$ Envelopes</th>
+                                <th>Valor Total</th>
+                            </tr>                                        
+                        </thead>
+						<tbody id="TOTAISDADV3041">
+						 <tr>
+                                <th>Cédulas</th>
+                                <th>Todos</th>
+                                <th>todos</th>
+                                <th>34</th>
+                                <th>7</th>
+                                <th>18</th>
+                                <th>56</th>
+                                <th>51</th>
+                                <th>29</th>
+                                <th>1</th>
+                                <th>196</th>
+                                <th>0</th> 
+                                <th></th>
+                                <th></th>
+                                <th class="ThFormataValor">R$&nbsp;7.053,00</th>
+                            </tr>
+                            <tr>
+                                <th>Envelopes</th>
+                                <th>Todos</th>
+                                <th>todos</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>4</th>
+                                <th class="ThFormataValor">R$&nbsp;431,00</th>
+                                <th class="ThFormataValor">R$&nbsp;431,00</th>
+                            </tr>
+                             <tr>
+                                <th>TOTAL</th>
+                                <th>Todos</th>
+                                <th>todos</th>
+                                <th>34</th>
+                                <th>7</th>
+                                <th>18</th>
+                                <th>56</th>
+                                <th>51</th>
+                                <th>29</th>
+                                <th>1</th>
+                                <th>196</th>
+                                <th>0</th>
+                                <th>4</th>
+                                <th class="ThFormataValor">R$&nbsp;431,00</th>
+                                <th class="ThFormataValor">R$&nbsp;7.484,00</th>
+                            </tr>
+						</tbody>
+                    </table>
+            </div>
+            
+            
+            
+        
+    <button onclick="changeTextUsuarios(this)" id="btn-dushow" type="button" class="DUSHOW btn btn-default btn-block hidden-print" data-toggle="collapse" data-target="#UADV3041" aria-expanded="true">+ LISTAR DEPÓSITOS POR USUÁRIOS</button>
+                  
+            <div id="UADV3041" class="panel-body DUSHOW collapse" aria-expanded="true" style="">
+                <h2>DEPÓSITOS POR USUÁRIOS - (ADV3041)</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>TIPO</th>
+                            <th>SETOR</th>
+                            <th id="UserSort">USUÁRIO</th>
+                            <th>R$ 2,00</th>
+                            <th>R$ 5,00</th>
+                            <th>R$ 10,00</th>
+                            <th>R$ 20,00</th>
+                            <th>R$ 50,00</th>
+                            <th>R$ 100,00</th>
+                            <th>R$ 200,00</th>
+                            <th>Qte de Notas</th>
+                            <th>R$ Notas</th>
+                            <th>Qte Envelopes</th>
+                            <th>R$ Envelopes</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="TOTAISUDADV3041">
+                
+                
+				
+				
+                
+                
+				
+				
+                
+                
+				
+				
+                
+                
+				
+				
+                
+                
+				
+				
+                
+                
+				
+				
+                
+                
+				
+				<tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>01</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>01</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>02</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>1</th>
+					<th>R$&nbsp;100,00</th>
+					<th>R$&nbsp;100,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>02</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>03</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>2</th>
+					<th>R$&nbsp;210,00</th>
+					<th>R$&nbsp;210,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>03</th>
+					<th>17</th>
+					<th>4</th>
+					<th>11</th>
+					<th>27</th>
+					<th>23</th>
+					<th>18</th>
+					<th>1</th>
+					<th>101</th>
+					<th>R$&nbsp;3.854,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;3.854,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>04</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>04</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>05</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>1</th>
+					<th>R$&nbsp;121,00</th>
+					<th>R$&nbsp;121,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>05</th>
+					<th>8</th>
+					<th>1</th>
+					<th>1</th>
+					<th>21</th>
+					<th>25</th>
+					<th>9</th>
+					<th>0</th>
+					<th>65</th>
+					<th>R$&nbsp;2.601,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;2.601,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>11</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>11</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Envelopes</th>
+					<th>Todos</th>
+					<th>12</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;0,00</th>
+					<th>R$&nbsp;0,00</th>
+				</tr><tr>
+					<th>Cédulas</th>
+					<th>Todos</th>
+					<th>12</th>
+					<th>9</th>
+					<th>2</th>
+					<th>6</th>
+					<th>8</th>
+					<th>3</th>
+					<th>2</th>
+					<th>0</th>
+					<th>30</th>
+					<th>R$&nbsp;598,00</th>
+					<th>0</th>
+					<th>0</th>
+					<th>R$&nbsp;598,00</th>
+				</tr></tbody>
+                </table>
+            </div>
+               </div>                  
+              
+    </div></table></body></html>
