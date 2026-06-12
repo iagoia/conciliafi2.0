@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import pkg from 'xlsx';
-const { readFile, utils } = pkg;
+const { readFile, read, utils } = pkg;
 import chardet from 'chardet';
 import iconv from 'iconv-lite';
 
@@ -90,6 +90,7 @@ export const VARIACOES_REPASSE = new Set([
 export const VARIACOES_TAXA = new Set([
   "desconto", "taxa", "tarifa", "valor taxa", "valor desconto", "desconto parcela",
   "valor_taxa", "valor_desconto", "comissão", "comissao", "fee", "mdr",
+  "valor mdr", "vlr mdr", "vl mdr",
   "valor taxa adm", "taxa adm", "taxa administração", "taxa administracao", "taxa_adm",
   "mdr_venda_taxa", "desconto total(r$)", "valor descontado",
   "valor da taxa (mdr)", "valor da taxa mdr", "taxa (mdr)", "taxa mdr", "taxas"
@@ -120,6 +121,12 @@ export const VARIACOES_TERMINAL = new Set([
   "identificador", "id_loja", "id loja", "numero do caixa"
 ]);
 
+export const VARIACOES_STATUS = new Set([
+  "status da venda", "status venda", "status da transação", "status da transacao",
+  "status", "situação", "situacao", "status da operacao", "status da operação",
+  "state", "status_transacao", "status_venda", "status da venda/ajuste"
+]);
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // AUXILIARES DE NORMALIZAÇÃO
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -144,9 +151,8 @@ export function normalizarParaBusca(texto: string): string {
 // FUNÇÕES DE INGESTÃO
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export function detectarEncoding(caminhoArquivo: string): string {
+export function detectarEncoding(buffer: Buffer): string {
   try {
-    const buffer = fs.readFileSync(caminhoArquivo);
     const result = chardet.detect(buffer);
     const encoding = result ? String(result) : "utf-8";
     console.log(`  [OK] Encoding detectado: ${encoding}`);
@@ -157,11 +163,12 @@ export function detectarEncoding(caminhoArquivo: string): string {
   }
 }
 
-export function detectarLinhasIgnorar(caminhoArquivo: string, encoding: string): number {
+export function detectarLinhasIgnorar(buffer: Buffer, encoding: string): number {
   const separadores = [";", ",", "\t"];
   try {
-    const buffer = fs.readFileSync(caminhoArquivo);
-    const content = iconv.decode(buffer, encoding);
+    // Decode only the first 20KB of the buffer to detect header lines quickly
+    const headBuffer = buffer.subarray(0, 20480);
+    const content = iconv.decode(headBuffer, encoding);
     const linhas = content.split(/\r?\n/);
     
     for (let i = 0; i < Math.min(40, linhas.length); i++) {
@@ -230,19 +237,19 @@ export function promoverCabecalhoExcel(grid: any[][]): { grid: any[][], offset: 
 }
 
 export function obterMelhorSheet(sheetNames: string[]): string {
-  const keywords = ["recebimentos", "vendas", "transacoes", "transações", "movimentacao", "movimentação", 
+  const keywords = ["recebimentos", "recebidos", "recebido", "pagamentos", "pagamento", "vendas", "transacoes", "transações", "movimentacao", "movimentação", 
                     "lancamentos", "lançamentos", "extrato", "relatorio", "relatório", "venda", "recebimento", "detalhes"];
   for (const sheet of sheetNames) {
     const sLow = sheet.toLowerCase();
     if (keywords.some(kw => sLow.includes(kw))) {
-      if (!sLow.includes("instru") && !sLow.includes("como usar") && !sLow.includes("help")) {
+      if (!sLow.includes("instru") && !sLow.includes("como usar") && !sLow.includes("help") && sLow !== "capa" && !sLow.includes("capa")) {
         return sheet;
       }
     }
   }
   for (const sheet of sheetNames) {
     const sLow = sheet.toLowerCase();
-    if (!sLow.includes("instru") && !sLow.includes("como usar") && !sLow.includes("help")) {
+    if (!sLow.includes("instru") && !sLow.includes("como usar") && !sLow.includes("help") && sLow !== "capa" && !sLow.includes("capa")) {
       return sheet;
     }
   }
@@ -251,7 +258,7 @@ export function obterMelhorSheet(sheetNames: string[]): string {
 
 export function inlineQuotesWrapped(line: string): boolean {
   const lineStrip = line.trim();
-  return lineStrip.startsWith('"') && lineStrip.endswith ? lineStrip.endsWith('"') && lineStrip.includes(',"') : false;
+  return lineStrip.startsWith('"') && lineStrip.endsWith('"') && lineStrip.includes(',"');
 }
 
 export function removerLinhasVaziasFinais(grid: any[][]): any[][] {
@@ -275,6 +282,7 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
     throw new Error(`Arquivo não encontrado: ${caminhoArquivo}`);
   }
 
+  const buffer = fs.readFileSync(caminho); // Read file once here
   const filename = path.basename(caminho);
   const extensao = path.extname(filename).toLowerCase();
   const isVspague = filename.toLowerCase().includes("vspague_");
@@ -283,7 +291,7 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
   if (filename.toLowerCase().includes("brinks") || path.dirname(caminho).toLowerCase().includes("brinks")) {
     console.log("  [OK] Brinks headerless Excel detectado.");
     try {
-      const workbook = readFile(caminho);
+      const workbook = read(buffer); // Use read(buffer) instead of readFile
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const allRows = utils.sheet_to_json<any[]>(sheet, { header: 1, defval: "" });
@@ -310,11 +318,10 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
   // ── Assinatura Especial: Destaxa VSPague (CSV sem cabeçalho)
   if (isVspague && !filename.toLowerCase().endsWith(".zip")) {
     try {
-      const buffer = fs.readFileSync(caminho);
       const isZip = buffer.slice(0, 4).toString('hex') === '504b0304';
       if (!isZip) {
         console.log("  [OK] Destaxa VSPague headerless CSV detectado.");
-        const encoding = detectarEncoding(caminho);
+        const encoding = detectarEncoding(buffer);
         const content = iconv.decode(buffer, encoding);
         const lines = content.split(/\r?\n/).filter(l => l.trim() !== "");
         const parsedRows = lines.map((line, idx) => {
@@ -337,17 +344,8 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
     }
   }
 
-  let headBuffer: Buffer;
-  try {
-    const fd = fs.openSync(caminho, 'r');
-    const tempBuf = Buffer.alloc(200);
-    fs.readSync(fd, tempBuf, 0, 200, 0);
-    fs.closeSync(fd);
-    headBuffer = tempBuf;
-  } catch (err) {
-    headBuffer = Buffer.alloc(0);
-  }
-
+  // Slice head buffer from the already loaded buffer
+  const headBuffer = buffer.subarray(0, 200);
   const isZip = headBuffer.slice(0, 4).toString('hex') === '504b0304';
   const headStr = headBuffer.toString('utf-8');
   const isXml = (headStr.includes("<?xml") || headStr.includes("<Workbook")) && !isZip;
@@ -355,7 +353,7 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
 
   if (extensao === ".xlsx" || extensao === ".xls" || isZip || isXml || isHtml) {
     try {
-      const workbook = readFile(caminho, { cellDates: true, raw: false });
+      const workbook = read(buffer, { cellDates: true, raw: false }); // Use read(buffer)
       const sheetName = obterMelhorSheet(workbook.SheetNames);
       console.log(`  [OK] Aba selecionada: '${sheetName}' de [${workbook.SheetNames.join(', ')}]`);
       const sheet = workbook.Sheets[sheetName];
@@ -379,7 +377,9 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
       for (let i = 1; i < grid.length; i++) {
         const rowObj: any = {};
         for (let j = 0; j < columns.length; j++) {
-          rowObj[columns[j]] = grid[i][j];
+          const col = columns[j];
+          if (col === '__proto__' || col === 'constructor' || col === 'prototype') continue;
+          rowObj[col] = grid[i][j];
         }
         rowObj["linha_arquivo"] = i + offset - 1;
         rows.push(rowObj);
@@ -390,15 +390,14 @@ export function carregarArquivo(caminhoArquivo: string): { columns: string[], ro
     }
   } else {
     // Carregar CSV/TXT
-    const encoding = detectarEncoding(caminho);
+    const encoding = detectarEncoding(buffer); // Use buffer instead of path
     const encodingsTentar = [encoding, "cp1252", "latin1", "utf-8"];
     let erroFinal: any = null;
 
     for (const enc of encodingsTentar) {
       try {
-        const buffer = fs.readFileSync(caminho);
-        let content = iconv.decode(buffer, enc);
-        const skiprows = detectarLinhasIgnorar(caminho, enc);
+        let content = iconv.decode(buffer, enc); // Use buffer already read once
+        const skiprows = detectarLinhasIgnorar(buffer, enc); // Use buffer instead of path
         
         let lines = content.split(/\r?\n/);
         
@@ -550,6 +549,7 @@ export function mapearColunas(columns: string[], rows: any[]): { columns: string
   buscarCandidato(VARIACOES_TAXA, "valor_taxa");
   buscarCandidato(VARIACOES_PRODUTO, "produto_original");
   buscarCandidato(VARIACOES_TERMINAL, "terminal_original");
+  buscarCandidato(VARIACOES_STATUS, "status_original");
 
   let colHora: string | null = null;
   const sortedHoras = Array.from(VARIACOES_HORA).sort((a, b) => b.length - a.length);
@@ -602,11 +602,14 @@ export function mapearColunas(columns: string[], rows: any[]): { columns: string
     });
   }
 
-  // Validar se coluna de hora é de fato hora (padrão HH:MM)
+  // Validar se coluna de hora é de fato hora (padrão HH:MM ou Date)
   if (colHora !== null) {
     const horaAmostra = mappedRows.slice(0, 50).map(r => r[colHora!]).filter(v => v !== null && v !== undefined && v !== "");
     if (horaAmostra.length > 0) {
-      const tempoValidos = horaAmostra.filter(v => /^\s*\d{1,2}:\d{2}/.test(String(v))).length;
+      const tempoValidos = horaAmostra.filter(v => {
+        if (v instanceof Date) return true;
+        return /^\s*\d{1,2}:\d{2}/.test(String(v));
+      }).length;
       if (tempoValidos / horaAmostra.length < 0.25) {
         console.log(`  [!] Coluna hora '${colHora}' descartada (apenas ${tempoValidos}/${horaAmostra.length} valores com padrão HH:MM).`);
         colHora = null;
@@ -615,7 +618,13 @@ export function mapearColunas(columns: string[], rows: any[]): { columns: string
   }
 
   if (colHora !== null) {
-    const extrairApenasHora = (valStr: string) => {
+    const extrairApenasHora = (valStr: any) => {
+      if (valStr instanceof Date) {
+        const h = String(valStr.getHours()).padStart(2, '0');
+        const m = String(valStr.getMinutes()).padStart(2, '0');
+        const s = String(valStr.getSeconds()).padStart(2, '0');
+        return `${h}:${m}:${s}`;
+      }
       const s = String(valStr).trim();
       if (!s || ["nan", "nat", "<na>"].includes(s.toLowerCase())) return "00:00:00";
       let parts = s;
@@ -638,7 +647,7 @@ export function mapearColunas(columns: string[], rows: any[]): { columns: string
 
     mappedRows.forEach(row => {
       const dtVal = row["data_transacao"] instanceof Date ? row["data_transacao"] : String(row["data_transacao"] || "");
-      const hrVal = String(row[colHora!] || "");
+      const hrVal = row[colHora!];
       
       if (dtVal instanceof Date) {
         // Se já é Date, apenas aplica a hora se hrVal for válido
@@ -667,10 +676,11 @@ export function mapearColunas(columns: string[], rows: any[]): { columns: string
 }
 
 export function limparValorMonetario(val: any): number {
-  if (val === null || val === undefined) return 0;
+  if (val === null || val === undefined) return NaN;
   if (typeof val === 'number') return val;
   
   let s = String(val).trim();
+  if (s === "" || s === "-" || s === "—") return NaN;
   s = s.replace("R$", "");
   s = s.replace(/\s+/g, "");
 
@@ -682,7 +692,7 @@ export function limparValorMonetario(val: any): number {
   }
 
   const num = parseFloat(s);
-  return isNaN(num) ? 0 : num;
+  return num;
 }
 
 export function extrairAnoDoArquivo(caminhoArquivo: string | null, rows?: any[]): number {
@@ -830,7 +840,8 @@ export function normalizarDatas(rows: any[], caminhoArquivo: string | null): (Da
   const cleanedStrs = rows.map(row => {
     let s = String(row["data_transacao"] || "").trim();
     if (row["data_transacao"] instanceof Date) {
-      return row["data_transacao"];
+      const d = row["data_transacao"];
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
     }
     s = s.replace(/[\u200b\u200c\u200d\u200e\u200f\ufeff\xa0\u00ad]+/g, '').trim();
     const isInvalid = INVALID_DATE_STRINGS.has(s.toLowerCase());

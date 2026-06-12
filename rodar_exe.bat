@@ -2,7 +2,7 @@
 title Conciliador - Executável Compilado
 cd /d "%~dp0"
 echo ===================================================
-echo Iniciando o Executavel do Conciliador (Conciliador.exe)...
+echo Iniciando o Executavel do Conciliador (ConciliadorFi2.exe)...
 echo ===================================================
-Conciliador.exe
+dist\ConciliadorFi2.exe
 pause

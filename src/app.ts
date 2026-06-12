@@ -5,7 +5,6 @@ import os from 'node:os';
 import net from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
-import open from 'open';
 
 import {
   carregarArquivo,
@@ -15,10 +14,14 @@ import {
   formatarMoedaBr
 } from './conciliacao.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const BASE_DIR = path.resolve(__dirname, '..');
-const LOG_FILE = path.join(BASE_DIR, "conciliacao.log");
+// @ts-ignore
+const _filename = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
+// @ts-ignore
+const _dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(_filename);
+const BASE_DIR = path.resolve(_dirname, '..');
+const LOG_FILE = typeof (process as any).pkg !== 'undefined' 
+  ? path.join(path.dirname(process.execPath), "conciliacao.log") 
+  : path.join(BASE_DIR, "conciliacao.log");
 
 const DEFAULT_PORT = 8000;
 
@@ -105,6 +108,7 @@ function sanitizarDadosAntiPromptInjection(rows: any[]): any[] {
   return rows.map(row => {
     const newRow: any = {};
     for (const key of Object.keys(row)) {
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue;
       let val = row[key];
       if (typeof val === 'string') {
         for (const padrao of padroesSuspeitos) {
@@ -229,7 +233,7 @@ function executarEspecialistaLukos(delegation: any, payload: any, apenasAnalise:
     };
 
     dtInicio = parseFormDate(dataInicioStr, 0, 0, 0);
-    dtFim = parseFormDate(dataFimStr, 23, 59, 58); // Segundos = 58 conforme especificação do Python
+    dtFim = parseFormDate(dataFimStr, 23, 59, 59);
     
     if (isNaN(dtInicio.getTime()) || isNaN(dtFim.getTime())) {
       throw new Error(`Datas inválidas: ${dataInicioStr} a ${dataFimStr}`);
@@ -363,7 +367,26 @@ function executarEspecialistaLukos(delegation: any, payload: any, apenasAnalise:
     });
 
     // Filtros por datas e validade
-    const validRows = mappedRows.filter(row => row["valor_transacao"] !== null && !isNaN(row["valor_transacao"]) && row["data_transacao"] instanceof Date);
+    const validRows = mappedRows.filter(row => {
+      if (row["valor_transacao"] === null || isNaN(row["valor_transacao"]) || !(row["data_transacao"] instanceof Date)) {
+        return false;
+      }
+      
+      // Filtrar fora status malsucedidos
+      if (row["status_original"]) {
+        const statusMin = String(row["status_original"]).trim().toLowerCase();
+        const STATUS_FALHADOS = new Set([
+          "negada", "negado", "expirado", "expirada", "cancelada", "cancelado",
+          "rejeitada", "rejeitado", "falhou", "erro", "failed", "denied", "expired",
+          "cancel", "canceled", "declined"
+        ]);
+        if (STATUS_FALHADOS.has(statusMin)) {
+          return false;
+        }
+      }
+      return true;
+    });
+    
     const filteredRows = validRows.filter(row => {
       const dt = row["data_transacao"] as Date;
       return dt >= dtInicio! && dt <= dtFim!;
@@ -420,7 +443,7 @@ function executarEspecialistaLukos(delegation: any, payload: any, apenasAnalise:
 
     // Ordenar por data decrescente e limitar top 500
     const sortedFiltered = [...filteredRows].sort((a, b) => (b["data_transacao"] as Date).getTime() - (a["data_transacao"] as Date).getTime());
-    const transacoesList = sortedFiltered.slice(0, 500).map(row => {
+    const transacoesList = sortedFiltered.map(row => {
       const dt = row["data_transacao"] as Date;
       const meio = row["meio_pagamento"];
       return {
@@ -535,25 +558,48 @@ function executarEspecialistaLukos(delegation: any, payload: any, apenasAnalise:
 // DETECTOR DE ARQUIVOS LOCAIS E ATUALIZAÇÕES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function escaneiaPastasComuns(): any[] {
+function obterPastasPermitidas(): Set<string> {
   const home = os.homedir();
-  const pastas = [
-    BASE_DIR,
-    path.join(BASE_DIR, "Importar_Conciliacao"),
-    path.join(home, "Downloads"),
-    path.join(home, "Documents"),
-    path.join(home, "Desktop"),
-    path.join(home, "Músicas"),
-    path.join(home, "Music"),
-    path.join(home, "Área de Trabalho"),
-    path.join(home, "OneDrive", "Downloads"),
-    path.join(home, "OneDrive", "Documents"),
-    path.join(home, "OneDrive", "Desktop"),
-    path.join(home, "OneDrive", "Área de Trabalho"),
-    path.join(home, "OneDrive", "Imagens", "Nova pasta"),
-    path.join(home, "OneDrive", "Imagens", "Nova pasta", "Importar_Conciliacao"),
-  ];
+  const pastas = new Set<string>([
+    path.resolve(BASE_DIR),
+    path.resolve(BASE_DIR, "Importar_Conciliacao"),
+    home,
+  ]);
 
+  try {
+    if (fs.existsSync(home)) {
+      const items = fs.readdirSync(home);
+      for (const item of items) {
+        if (item.startsWith(".") || item.toLowerCase() === "appdata") continue;
+        const fullPath = path.resolve(home, item);
+        try {
+          const stats = fs.statSync(fullPath);
+          if (stats.isDirectory()) {
+            pastas.add(fullPath);
+
+            if (item.toLowerCase() === "onedrive") {
+              try {
+                const subItems = fs.readdirSync(fullPath);
+                for (const subItem of subItems) {
+                  if (subItem.startsWith(".")) continue;
+                  const subPath = path.resolve(fullPath, subItem);
+                  if (fs.statSync(subPath).isDirectory()) {
+                    pastas.add(subPath);
+                  }
+                }
+              } catch {}
+            }
+          }
+        } catch {}
+      }
+    }
+  } catch {}
+
+  return pastas;
+}
+
+function escaneiaPastasComuns(): any[] {
+  const pastas = obterPastasPermitidas();
   const arquivosEncontrados: any[] = [];
   const formatos = new Set([".csv", ".xlsx", ".xls", ".txt", ".tsv"]);
   const palavrasChave = new Set(["venda", "transac", "relatorio", "cielo", "stone", "pagseguro", "concilia", "extrato", "financeiro", "rede", "getnet", "safrapay", "mercado"]);
@@ -575,7 +621,7 @@ function escaneiaPastasComuns(): any[] {
               const caminhoStr = path.resolve(itemPath);
               if (!arquivosAdicionados.has(caminhoStr)) {
                 arquivosAdicionados.add(caminhoStr);
-                arquivosEncontrados.append ? null : arquivosEncontrados.push({
+                arquivosEncontrados.push({
                   nome: item,
                   caminho: caminhoStr,
                   tamanho: stats.size,
@@ -597,23 +643,7 @@ function escaneiaPastasComuns(): any[] {
 
 function validarCaminhoLocal(caminhoStr: string): boolean {
   if (!caminhoStr) return false;
-  const home = os.homedir();
-  const pastasPermitidas = [
-    path.resolve(BASE_DIR),
-    path.resolve(BASE_DIR, "Importar_Conciliacao"),
-    path.resolve(home, "Downloads"),
-    path.resolve(home, "Documents"),
-    path.resolve(home, "Desktop"),
-    path.resolve(home, "Músicas"),
-    path.resolve(home, "Music"),
-    path.resolve(home, "Área de Trabalho"),
-    path.resolve(home, "OneDrive", "Downloads"),
-    path.resolve(home, "OneDrive", "Documents"),
-    path.resolve(home, "OneDrive", "Desktop"),
-    path.resolve(home, "OneDrive", "Área de Trabalho"),
-    path.resolve(home, "OneDrive", "Imagens", "Nova pasta"),
-    path.resolve(home, "OneDrive", "Imagens", "Nova pasta", "Importar_Conciliacao"),
-  ];
+  const pastasPermitidas = obterPastasPermitidas();
 
   try {
     const caminho = path.resolve(caminhoStr);
@@ -690,7 +720,7 @@ function abrirComoApp(url: string): boolean {
   if (process.platform !== 'win32') return false;
 
   const caminhosChrome = [
-    path.expandvars ? path.expandvars("%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe") : "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
     path.join(os.homedir(), "AppData\\Local\\Google\\Chrome\\Application\\chrome.exe")
   ];
@@ -701,7 +731,7 @@ function abrirComoApp(url: string): boolean {
   ];
 
   for (const caminho of caminhosChrome) {
-    const resolvedPath = caminho.replace(/%([^%]+)%/g, (_, n) => process.env[n] || "");
+    const resolvedPath = caminho.replace(/%([^%]+)%/g, (_: string, n: string) => process.env[n] || "");
     if (fs.existsSync(resolvedPath)) {
       try {
         exec(`"${resolvedPath}" --app=${url}`);
@@ -712,7 +742,7 @@ function abrirComoApp(url: string): boolean {
   }
 
   for (const caminho of caminhosEdge) {
-    const resolvedPath = caminho.replace(/%([^%]+)%/g, (_, n) => process.env[n] || "");
+    const resolvedPath = caminho.replace(/%([^%]+)%/g, (_: string, n: string) => process.env[n] || "");
     if (fs.existsSync(resolvedPath)) {
       try {
         exec(`"${resolvedPath}" --app=${url}`);
@@ -811,6 +841,7 @@ app.post('/api/conciliar', (req, res) => {
 
     // Human-in-the-Loop check
     for (const key of Object.keys(payload)) {
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue;
       const v = payload[key];
       if (typeof v === 'string') {
         const upper = v.toUpperCase();
@@ -883,7 +914,8 @@ async function startServer() {
 
     try {
       if (!abrirComoApp(urlLocal)) {
-        open(urlLocal);
+        const startCmd = process.platform === 'win32' ? `start "" "${urlLocal}"` : process.platform === 'darwin' ? `open "${urlLocal}"` : `xdg-open "${urlLocal}"`;
+        exec(startCmd);
         logInfo("Navegador padrão aberto automaticamente.");
       }
     } catch (e: any) {

@@ -1,0 +1,11 @@
+{
+  "pkg": {
+    "assets": [
+      "index.html"
+    ],
+    "targets": [
+      "node20-win-x64"
+    ],
+    "outputPath": "dist"
+  }
+}

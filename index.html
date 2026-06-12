@@ -1093,41 +1093,7 @@
                 </div>
             </div>
 
-            <!-- Tracing de Delegação de Agentes -->
-            <div class="glass-card" id="agent-tracer-card" style="margin-bottom: 2rem; display: none;">
-                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem;">
-                    <div style="background: rgba(167, 139, 250, 0.1); padding: 0.5rem; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;">
-                        <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: #a78bfa; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l-7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 style="font-family: var(--font-outfit); font-size: 1.3rem; font-weight: 700; color: #a78bfa;">Trace e Delegação do Agente</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem;">Fluxo operacional: Governança do Agente de Triagem e Acordo Operacional com Especialista_LUKOS.</p>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div>
-                        <h4 style="font-size: 1rem; margin-bottom: 0.8rem; color: #a78bfa; display: flex; align-items: center; gap: 0.4rem;">
-                            <span style="display: inline-block; width: 8px; height: 8px; background: #a78bfa; border-radius: 50%;"></span>
-                            Logs de Tracing
-                        </h4>
-                        <div id="tracer-logs" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 12px; font-family: monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; color: #e2e8f0; line-height: 1.5; text-align: left;">
-                            <!-- Inserido via JS -->
-                        </div>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 1rem; margin-bottom: 0.8rem; color: #10b981; display: flex; align-items: center; gap: 0.4rem;">
-                            <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>
-                            Payload de Delegação (JSON)
-                        </h4>
-                        <pre id="tracer-payload" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 12px; font-family: monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; color: #10b981; margin: 0; text-align: left;"></pre>
-                    </div>
-                </div>
-            </div>
+            <!-- Tracing de Delegação de Agentes (Removido da tela) -->
 
             <!-- Gráfico e Estatísticas Secundárias -->
             <div class="visual-section">
@@ -1359,9 +1325,11 @@
                 const data = await response.json();
 
                 if (response.ok && data.status === 'success') {
-                    // Atualizar inputs com o range do arquivo
-                    dateStartInput.value = data.min_date;
-                    dateEndInput.value = data.max_date;
+                    // Atualizar inputs com o range do arquivo arredondado para 00:00 a 23:59
+                    const dataMinParte = data.min_date.split('T')[0];
+                    const dataMaxParte = data.max_date.split('T')[0];
+                    dateStartInput.value = dataMinParte + "T00:00";
+                    dateEndInput.value = dataMaxParte + "T23:59";
                     
                     // Limpar restrições anteriores de min e max do picker
                     dateStartInput.removeAttribute('min');
@@ -1539,7 +1507,7 @@
             
             const partesData = dataParte.split('-');
             if (partesData.length === 3) {
-                const segundos = isEnd ? "58" : "00";
+                const segundos = isEnd ? "59" : "00";
                 return `${partesData[2]}/${partesData[1]}/${partesData[0]} ${horaParte}:${segundos}`;
             }
             return dataStr;
@@ -1685,34 +1653,7 @@
             searchInput.value = '';
             atualizarTabela();
 
-            // Atualizar Tracer de Agente
-            const tracerCard = document.getElementById('agent-tracer-card');
-            const tracerLogs = document.getElementById('tracer-logs');
-            const tracerPayload = document.getElementById('tracer-payload');
-            
-            if (data.delegacao_trace) {
-                tracerCard.style.display = 'block';
-                
-                const trace = data.delegacao_trace;
-                const statusStr = data.status === 'success' ? 'SUCESSO' : data.status;
-                const statusColor = data.status === 'success' ? '#10b981' : '#f43f5e';
-                
-                let logsHtml = `
-                    <div style="margin-bottom: 0.8rem; color: #a78bfa;">[INFO] [Agent: Triagem_Nivel1] Recebido novo chamado para conciliação.</div>
-                    <div style="margin-bottom: 0.8rem; color: #60a5fa;">[INFO] [Agent: Triagem_Nivel1] Analisando metadados do arquivo: <strong>${trace.contexto.nome_arquivo}</strong></div>
-                    <div style="margin-bottom: 0.8rem; color: #60a5fa;">[INFO] [Agent: Triagem_Nivel1] Adquirente detectada: <strong>${trace.contexto.adquirente_detectada.toUpperCase()}</strong></div>
-                    <div style="margin-bottom: 0.8rem; color: #fbbf24;">[INFO] [Agent: Triagem_Nivel1] Encaminhando tarefa para o especialista técnico <strong>${trace.alvo}</strong>...</div>
-                    <div style="margin-bottom: 0.8rem; color: #a78bfa;">[INFO] [Agent: Especialista_LUKOS] Iniciando processamento...</div>
-                    <div style="margin-bottom: 0.8rem; color: #e2e8f0;">[INFO] [Agent: Especialista_LUKOS] Higienização monetária e ordenação semântica aplicadas.</div>
-                    <div style="margin-bottom: 0.8rem; color: #e2e8f0;">[INFO] [Agent: Especialista_LUKOS] Mapeamento de colunas realizado com sucesso.</div>
-                    <div style="margin-bottom: 0.8rem; color: ${statusColor};">[STATUS] [Agent: Especialista_LUKOS] Finalizado com status: <strong>${statusStr}</strong></div>
-                `;
-                
-                tracerLogs.innerHTML = logsHtml;
-                tracerPayload.textContent = JSON.stringify(trace, null, 2);
-            } else {
-                tracerCard.style.display = 'none';
-            }
+            // Atualizar Tracer de Agente (Removido da tela)
 
             // Tornar dashboard visível com animação
             resultsDashboard.classList.add('dashboard-visible');
@@ -1854,24 +1795,40 @@
                 return;
             }
             
-            // Agrupar por data (DD/MM/AAAA)
+            // Agrupar por data (DD/MM/AAAA) ou por hora se for apenas 1 dia
+            const datasUnicas = [...new Set(txs.map(t => t.data.split(' ')[0]))];
             const agrupado = {};
-            txs.forEach(t => {
-                const dataParte = t.data.split(' ')[0];
-                agrupado[dataParte] = (agrupado[dataParte] || 0) + parseFloat(t.valor_liquido || 0);
-            });
-            
-            // Ordenar as datas cronologicamente
-            const datasOrdenadas = Object.keys(agrupado).sort((a, b) => {
-                const partsA = a.split('/');
-                const partsB = b.split('/');
-                return new Date(partsA[2], partsA[1]-1, partsA[0]) - new Date(partsB[2], partsB[1]-1, partsB[0]);
-            });
-            
-            const valores = datasOrdenadas.map(d => agrupado[d]);
+            let labels = [];
+            let valores = [];
+
+            if (datasUnicas.length <= 1) {
+                // Inicializar todas as 24 horas do dia
+                for (let i = 0; i < 24; i++) {
+                    const labelHora = String(i).padStart(2, '0') + 'h';
+                    agrupado[labelHora] = 0;
+                }
+                txs.forEach(t => {
+                    const horaCompleta = t.data.split(' ')[1] || "00:00:00";
+                    const horaParte = horaCompleta.split(':')[0] + 'h';
+                    agrupado[horaParte] = (agrupado[horaParte] || 0) + parseFloat(t.valor_liquido || 0);
+                });
+                labels = Object.keys(agrupado).sort((a, b) => parseInt(a) - parseInt(b));
+                valores = labels.map(l => agrupado[l]);
+            } else {
+                txs.forEach(t => {
+                    const dataParte = t.data.split(' ')[0];
+                    agrupado[dataParte] = (agrupado[dataParte] || 0) + parseFloat(t.valor_liquido || 0);
+                });
+                labels = Object.keys(agrupado).sort((a, b) => {
+                    const partsA = a.split('/');
+                    const partsB = b.split('/');
+                    return new Date(partsA[2], partsA[1]-1, partsA[0]) - new Date(partsB[2], partsB[1]-1, partsB[0]);
+                });
+                valores = labels.map(l => agrupado[l]);
+            }
             
             renderizarGrafico({
-                labels: datasOrdenadas,
+                labels: labels,
                 valores: valores
             });
         }
