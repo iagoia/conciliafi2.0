@@ -4,6 +4,12 @@ Histórico de alterações e lançamentos do Conciliador Financeiro local. Segue
 
 ---
 
+## [1.2.1] — 2026-11-10
+### Adicionado
+- **Governança de Agentes e Política Compartilhada de PR (`AGENTS.md`, `.hermes.md`, `CLAUDE.md`, `GEMINI.md`):** Criação de `AGENTS.md` na raiz como fonte canônica de instruções do projeto, preservando `regras.md` e introduzindo o bloco `shared-agent-pr-policy:v1` (uso obrigatório de branch por tarefa, um PR por objetivo, revisão pré-PR com `git diff --check`, segunda revisão gratuita em modo somente leitura no Orca quando disponível, merge humano exclusivo e uso de worktrees isolados), além de arquivos mínimos de referência para agentes específicos (`.hermes.md`, `CLAUDE.md`, `GEMINI.md`).
+
+---
+
 ## [1.2.0] — 2026-06-12
 ### Adicionado
 - **Filtro de Status Malsucedidos:** Agora o sistema lê a coluna de status (`status da venda` ou similar) e descarta automaticamente registros marcados com status falhos (ex: `negada`, `expirado`, `cancelado`). Isso impede que tentativas falhas inflem o faturamento bruto ou distorçam os custos de taxas.
