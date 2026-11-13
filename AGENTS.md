@@ -16,10 +16,10 @@ Este arquivo é a **fonte principal e canônica de instruções** para todos os 
 <!-- shared-agent-pr-policy:v1 -->
 ## Política Compartilhada de Branches, Revisão e Pull Requests
 
-- **Escopo de Aplicação:** Aplica-se a Hermes, Codex, OpenCode, Antigravity e demais agentes do projeto; preserve instruções existentes de segurança, permissões e custo.
-- **Branch por Tarefa e Unicidade de PR:** Toda tarefa que altera arquivos deve usar uma branch específica da tarefa, nunca editar ou fazer push direto na branch padrão (`main`/`master`). Mantenha apenas **um PR por objetivo**; descubra e atualize o PR existente quando continuar o mesmo trabalho.
-- **Revisão Pré-PR e Verificações Obrigatórias:** Antes de abrir **ou** atualizar um PR, revise o diff completo em relação à branch base atualizada (incluindo arquivos *staged*, *unstaged* e *untracked* quando relevante), procure regressões, mudanças fora do escopo e segredos; rode `git diff --check` e as verificações/testes relevantes do projeto; corrija os problemas encontrados e reporte bloqueios reais.
-- **Segunda Revisão no Orca (Somente Leitura e Gratuita):** Se houver outro agente gratuito disponível no Orca, solicite segunda revisão do diff em modo somente leitura, sem escritores concorrentes; não use fallback pago; registre no PR o agente/modelo utilizado e o resultado da revisão, ou a indisponibilidade/motivo. Não invente revisões nem execuções de testes.
-- **Conteúdo do PR e Merge Exclusivo Humano:** Todo PR deve conter resumo claro, comandos executados e resultados reais de testes/verificações, estado da segunda revisão e eventuais pendências. O merge é **exclusivo do usuário**; agentes nunca devem fazer merge nem ativar *auto-merge*.
-- **Isolamento de Workspace e Preservação Local:** Preserve alterações locais preexistentes; use `worktree` isolado por repositório e clone separado para repositórios ainda não abertos no Orca.
+- Aplica-se a Hermes, Codex, OpenCode, Antigravity e demais agentes; preserve as regras específicas de segurança, privacidade, permissões e custo do projeto.
+- Para tarefas que alteram arquivos, trabalhe em branch própria da tarefa, nunca diretamente na branch padrão. Abra um PR por objetivo e atualize o PR existente ao continuar o mesmo trabalho.
+- Antes de abrir ou atualizar PR, atualize a referência da branch base e revise o diff completo contra ela, procurando regressões, mudanças fora do escopo e segredos. Rode `git diff --check` e as verificações/testes relevantes; corrija os problemas encontrados e registre bloqueios reais.
+- Se houver no Orca outro agente gratuito disponível, solicite uma segunda revisão do diff em modo somente leitura. Não use fallback pago. Registre no PR se a revisão ocorreu, qual agente/modelo e o resultado, ou a indisponibilidade/motivo. Não declare revisão/testes que não foram executados.
+- O PR deve incluir resumo, verificações e resultados reais, estado da segunda revisão e pendências. O merge e o auto-merge são exclusivos do usuário; agentes não devem executar nenhum dos dois.
+- Preserve alterações locais preexistentes. Use worktree isolado por repositório; para repositórios ainda não disponíveis no Orca, use clone separado.
 <!-- /shared-agent-pr-policy:v1 -->
